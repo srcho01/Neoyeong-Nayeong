@@ -1,0 +1,151 @@
+.loginPage {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0 0 0 var(--padding-12xs);
+  box-sizing: border-box;
+  text-align: center;
+  font-size: var(--font-size-41xl);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
+
+.frameParent{
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+  width: 481px;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-98xl);
+}
+
+.frameGroup {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-17xl);
+  max-width: 100%;
+}
+
+.logo {
+  width: 453px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-xl);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.loginText{
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-xl);
+  font-size: var(--font-size-26xl);
+  color: var(--color-black);
+}
+.h1 {
+  margin: 0;
+  height: 54px;
+  width: 150px;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+}
+
+.frameContainer {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-mini);
+  font-size: var(--font-size-25px);
+  color: var(--color-gray);
+}
+
+.frameEmail,
+.framePassword {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-xl);
+  font-size: var(--font-size-26xl);
+  color: var(--color-black);
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background-color: var(--color-gainsboro);
+  height: 66px;
+  border-radius: var(--br-xl);
+  justify-content: flex-start;
+  padding: var(--padding-lg) var(--padding-8xl);
+  box-sizing: border-box;
+  font-family: var(--font-inter);
+  font-weight: 700;
+  font-size: var(--font-size-25px);
+  color: var(--color-black);
+  min-width: 250px;
+}
+
+.loginButton {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0 var(--padding-2xl) 0 var(--padding-xl);
+}
+.b {
+  position: relative;
+  letter-spacing: 0.05em;
+  line-height: 30.4px;
+  display: inline-block;
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.signUpButton {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-mini);
+  font-size: var(--font-size-35px);
+  color: var(--color-gray);
+}
+.h2 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.05em;
+  line-height: 1px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .h1 {
+    font-size: var(--font-size-17xl);
+  }
+  .h2 {
+    font-size: var(--font-size-28px);
+  }
+}
