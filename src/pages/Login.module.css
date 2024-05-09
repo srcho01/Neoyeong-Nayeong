@@ -1,0 +1,37 @@
+.div,
+.homeIcon {
+  position: relative;
+  overflow: hidden;
+}
+.homeIcon {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.div {
+  width: 100%;
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: var(--padding-21xl) 47px 201px;
+  box-sizing: border-box;
+  gap: 50px;
+  line-height: normal;
+  letter-spacing: normal;
+}
+@media screen and (max-width: 750px) {
+  .div {
+    gap: 91px;
+    padding-left: var(--padding-4xl);
+    padding-right: var(--padding-4xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .div {
+    gap: 46px;
+  }
+}
