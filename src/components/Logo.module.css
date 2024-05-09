@@ -1,0 +1,17 @@
+.logo {
+color: var(--color-gold);
+}
+
+.h {
+    margin: 0;
+    position: relative;
+    font-size: inherit;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    font-family: inherit;
+    width: 247px;
+    display: inline-block;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+    text-shadow: 1px 0 0#888, 0 1px 0#888, -1px 0 0#888, 0-1px 0#888;
+    white-space: nowrap;
+}
