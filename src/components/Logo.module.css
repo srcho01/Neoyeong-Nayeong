@@ -1,16 +1,16 @@
-.logo {
-color: var(--color-gold);
+.neona{
+    color: var(--color-gold);
+}
+.yeong {
+    color: var(--color-white)
 }
 
 .h {
-    margin: 0;
-    position: relative;
-    font-size: inherit;
-    letter-spacing: 0.05em;
+    margin: 0 0;
+    font-size: 60px;
     font-weight: 700;
     font-family: inherit;
-    width: 247px;
-    display: inline-block;
+    letter-spacing: 0.05em;
     filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
     text-shadow: 1px 0 0#888, 0 1px 0#888, -1px 0 0#888, 0-1px 0#888;
     white-space: nowrap;
