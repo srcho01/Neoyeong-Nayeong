@@ -1,0 +1,186 @@
+.fullScreen {
+  background-color: var(--color-white);
+  overflow: auto;
+}
+
+.frame {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: black 2px solid;
+}
+
+.title {
+  margin: 0 0;
+  display: inline-block;
+  align-self: center;
+  
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 40px;
+}
+
+.imageContainer {
+  display: flex;
+  align-self: center;
+}
+
+.homeIcon {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.profileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 50px;
+}
+.profileIcon {
+  height: 200px;
+  width: 200px;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 100px;
+  margin-bottom: 100px;
+}
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 500px;
+  gap: 30px;
+}
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 400px;
+}
+.infoTitle {
+  margin: 0 0;
+  padding-left: 5px;
+  display: inline-block;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 27px;
+}
+
+.input {
+  align-self: stretch;
+  color: var(--color-black);
+  border: 3px solid black;
+  outline: 0;
+  background-color: var(--color-white);
+  height: 55px;
+  border-radius: 40px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-black);
+  min-width: 200px;
+  padding: 0 15px;
+}
+
+.noneDupInput {
+  align-self: center;
+  color: var(--color-black);
+  outline: 0;
+  height: 40px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  min-width: 200px;
+  place-content: black;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+.noneDup {
+  display: flex;
+  align-self: stretch;
+  color: var(--color-black);
+  border: 3px solid black;
+  outline: 0;
+  background-color: var(--color-white);
+  height: 55px;
+  border-radius: 40px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-black);
+  min-width: 200px;
+  padding: 0 15px;
+}
+.dupCheck {
+  display: flex;
+  align-self: center;
+  cursor: pointer;
+  border-left: black 3px solid;
+  padding-left: 10px;
+}
+
+.gender {
+  display: flex;
+  padding: 8px;
+  gap: 15px;
+}
+.gender > button {
+  background-color: white;
+  border-radius: 10px;
+  border: black solid 3px;
+  padding: 10px 30px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.delBtn {
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  background-color: var(--color-gainsboro);
+  border-radius: 10px;
+  border: 0;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.Submit {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 30px;
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
