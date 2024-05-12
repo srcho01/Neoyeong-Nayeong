@@ -116,6 +116,7 @@ const MatchBoard = () => {
             <PostSelectType onClose={closePlus} />
           </PortalPopup>
         )}
+
       </div>
     </div>
   );
