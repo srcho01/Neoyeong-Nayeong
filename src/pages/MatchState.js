@@ -3,37 +3,29 @@ import { useNavigate } from "react-router-dom";
 import styles from "./MatchState.module.css";
 import Logo from "../components/Logo"
 
-import Component1 from "../components/Component1";
 import PortalPopup from "../components/PortalPopup";
-import Component from "../components/Component";
-import FrameComponent1 from "../components/FrameComponent1";
-import FrameComponent3 from "../components/FrameComponent3";
-
+import MatchList from "../components/popUp/MatchList"
+import MatchResult from "../components/popUp/MatchResult";
 
 const MatchState = () => {
-  const [isFrameOpen, setFrameOpen] = useState(false);
-  const [isFrame1Open, setFrame1Open] = useState(false);
+  const [isListOpen, setListOpen] = useState(false);
+  const [isResultOpen, setResultOpen] = useState(false);
   const navigate = useNavigate();
 
-  // const onAntDesignhomeFilledIconClick = useCallback(() => {
-  //   navigate("/main-login");
-  // }, [navigate]);
+  const openList = useCallback(() => {
+    setListOpen(true);
+  }, []);
+  const closeList = useCallback(() => {
+    setListOpen(false);
+  }, []);
 
-  // const openFrame = useCallback(() => {
-  //   setFrameOpen(true);
-  // }, []);
+  const openResult = useCallback(() => {
+    setResultOpen(true);
+  }, []);
+  const closeResult = useCallback(() => {
+    setResultOpen(false);
+  }, []);
 
-  // const closeFrame = useCallback(() => {
-  //   setFrameOpen(false);
-  // }, []);
-
-  // const openFrame1 = useCallback(() => {
-  //   setFrame1Open(true);
-  // }, []);
-
-  // const closeFrame1 = useCallback(() => {
-  //   setFrame1Open(false);
-  // }, []);
 
   const onHomeIconClick = useCallback(() => {
     navigate("/main/login");
@@ -62,14 +54,14 @@ const MatchState = () => {
         등록
       </div>
       <div className={styles.matchingContainer}>
-        <div className={styles.matchingWait}>
+        <div className={styles.matchingWait} onClick={openList}>
           <b className={styles.sche}>두산 vs 롯데 4월 7일 14:00</b>
           <b className={styles.t}>저랑 야구장 같이 가실 분 2명 구합니다! </b>
           <b className={styles.type}>오프라인</b>
           <b className={styles.status}> 신청 3 </b>
         </div>
 
-        <div className={styles.matchingFinish}>
+        <div className={styles.matchingFinish} onClick={openResult}>
           <b className={styles.sche}>두산 vs 롯데 4월 7일 14:00</b>
           <b className={styles.t}>저랑 야구장 같이 가실 분 2명 구합니다! </b>
           <b className={styles.type}>온라인</b>
@@ -87,13 +79,32 @@ const MatchState = () => {
           <b className={styles.status}> 대기 </b>
         </div>
 
-        <div className={styles.matchingFinish}>
+        <div className={styles.matchingFinish} onClick={openResult}>
           <b className={styles.sche}>두산 vs 롯데 4월 7일 14:00</b>
           <b className={styles.t}>저랑 야구장 같이 가실 분 2명 구합니다! </b>
           <b className={styles.type}>오프라인</b>
           <b className={styles.status}> 수락 </b>
         </div>
       </div>
+
+      {isListOpen && (
+        <PortalPopup
+          overlayColor="rgba(113, 113, 113, 0.3)"
+          placement="Centered"
+          onOutsideClick={closeList}
+        >
+          <MatchList onClose={closeList} />
+        </PortalPopup>
+      )}
+      {isResultOpen && (
+        <PortalPopup
+          overlayColor="rgba(113, 113, 113, 0.3)"
+          placement="Centered"
+          onOutsideClick={closeResult}
+        >
+          <MatchResult onClose={closeResult} />
+        </PortalPopup>
+      )}
 
     </div>
   );
