@@ -4,19 +4,12 @@ import styles from "./MainLogout.module.css";
 
 import Datetime from "../components/Datetime";
 import Logo from "../components/Logo"
-
-import FrameComponent6 from "../components/FrameComponent6";
-import FrameComponent5 from "../components/FrameComponent5";
-import FrameComponent4 from "../components/FrameComponent4";
+import MainBody from "../components/MainBody"
 
 
 const MainLogout = () => {
   const navigate = useNavigate();
   const currentDateTime = Datetime();
-
-  const onPrayanaWhereInnovationDriveClick = useCallback(() => {
-    navigate("/2");
-  }, [navigate]);
 
   const onLoginTextButtonClick = useCallback(() => {
       navigate("/login");
@@ -34,13 +27,8 @@ const MainLogout = () => {
         <b className={styles.time}> 지금은 {currentDateTime}입니다 </b>
       </header>
 
-      <div className={styles.main}>
-        <FrameComponent6
-          onPrayanaWhereInnovationDriveClick={onPrayanaWhereInnovationDriveClick}
-        />
-        <FrameComponent5 />
-        <FrameComponent4 />
-      </div>
+      <MainBody />
+
     </div>
   );
 };
