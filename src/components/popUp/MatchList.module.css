@@ -75,16 +75,23 @@
 
 .peopleList {
   overflow-y: auto;
-  border: 3px solid red;
 }
 
-.submit, .acceptTrue, .acceptFalse {
+.submit, .info, .acceptTrue, .acceptFalse {
   text-align: center;
   background-color: white;
   font-size: 20px;
   font-weight: 700;
   margin: 0 7px;
   cursor: pointer;
+}
+.submit {
+  margin: 0 0;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .acceptTrue, .acceptFalse {

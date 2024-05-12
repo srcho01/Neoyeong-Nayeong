@@ -16,7 +16,7 @@ const PersonComponent = ({ profileSrc, nickname, openHandler, isAccepted }) => {
       <div className={styles.nickname}>
         {nickname}
       </div>
-      <div className={styles.submit} onClick={openHandler}>
+      <div className={styles.info} onClick={openHandler}>
         정보
       </div>
       <div className={`${isAccepted ? styles.acceptTrue : styles.acceptFalse}`}>
@@ -88,8 +88,10 @@ const MatchList = ({onClose}) => {
         {people}
       </div>
 
-      <div className={styles.submit} onClick={onReturnClick}>
-        완료
+      <div className={styles.submitContainer}>
+        <span className={styles.submit} onClick={onReturnClick}>
+          완료
+        </span>
       </div>
 
       {isCurrentOpen && (

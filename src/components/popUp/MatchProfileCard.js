@@ -32,8 +32,13 @@ const MatchProfileCard = ({close, allClose}) => {
 
       <div className={styles.card}> <ProfileCard /> </div>
 
-      <div className={styles.Submit} onClick={onBackClick}>
-        수락
+      <div className={styles.submitContainer}>
+        <span className={styles.submit} onClick={onBackClick}>
+          이전
+        </span>
+        <span className={styles.submit} onClick={onReturnClick}>
+          수락
+        </span>
       </div>
     </div>
   );
