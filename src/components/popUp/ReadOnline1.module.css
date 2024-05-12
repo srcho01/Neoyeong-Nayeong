@@ -1,0 +1,89 @@
+.popUpFrame {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 700px;
+  background-color: var(--color-white);
+  padding: 20px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.type {
+  display: inline-block;
+  border: 0;
+  padding: 5px 10px;
+  background-color: var(--color-palegoldenrod-200);
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.icon {
+  width: 25px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.infoContainer, .articleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+}
+.infoTitle {
+  margin: 0 0;
+  padding-left: 5px;
+  display: inline-block;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-family: inherit;
+  font-size: 25px;
+}
+.input, .article {
+  justify-self: center;
+  text-align: left;
+  color: var(--color-black);
+  border: 3px solid black;
+  outline: 0;
+  background-color: var(--color-gainsboro);
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-black);
+  min-width: 200px;
+  padding: 10px 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.article {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+.articleContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.Submit {
+  text-align: center;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
