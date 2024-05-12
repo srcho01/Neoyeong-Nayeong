@@ -47,8 +47,8 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  gap: var(--gap-mini);
-  font-size: var(--font-size-25px);
+  gap: 15px;
+  font-size: 25px;
   color: var(--color-gray);
   max-width: 400px;
 }
@@ -61,7 +61,7 @@
   outline: 0;
   background-color: var(--color-gainsboro);
   height: 55px;
-  border-radius: var(--br-xl);
+  border-radius: 20px;
   box-sizing: border-box;
   font-family: var(--font-inter);
   font-weight: 700;
