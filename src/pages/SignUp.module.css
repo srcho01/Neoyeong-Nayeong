@@ -106,7 +106,7 @@
   font-family: inherit;
   font-weight: 700;
   font-size: 20px;
-  min-width: 200px;
+  min-width: 300px;
   place-content: black;
   border: 1px solid rgba(0, 0, 0, 0);
 }
@@ -124,7 +124,7 @@
   font-weight: 700;
   font-size: 20px;
   color: var(--color-black);
-  min-width: 200px;
+  min-width: 300px;
   padding: 0 15px;
 }
 .dupCheck {

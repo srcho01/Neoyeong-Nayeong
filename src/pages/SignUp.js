@@ -1,14 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { collection, query, where, getDocs, doc, setDoc } from 'firebase/firestore';
+import { app, db } from '../firebase';
 
 import styled from "styled-components";
 import styles from "./SignUp.module.css";
 
-const Button = styled.button`
-  &:focus{
-    background-color : var(--color-palegoldenrod-200);
-  }
-`;
+import getUserInput from "../hooks/getUserInput"
+import { SPORT, GENDER, TEAM } from '../components/Data';
+
 
 const Dropdown = styled.select`
   padding: 8px;
@@ -21,50 +23,180 @@ const Dropdown = styled.select`
   color: black;
 `;
 
-const SPORT = [
-  {id: 1, name: '야구', value: '야구'},
-  {id: 2, name: '축구', value: '축구'},
-  {id: 3, name: 'LoL', value: 'LoL'},
-]
+const DropDown = ({list, data, onChange}) => {
+  return (
+    <Dropdown value={typeof data === "string" ? data : ""} onChange={onChange}>
+      <option value="" disabled>선택</option>
+      {list.map((item) => (
+        <option 
+          key={item.id}
+          value={item.value}
+        > {item.name}
+        </option>
+      ))}
+    </Dropdown>
+  );
+};
 
+function emailCheck(email_address) {
+	const email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+	if(!email_regex.test(email_address)){ 
+		return false; 
+	}else{
+		return true;
+	}
+}
+
+function passwordCheck(pw1, pw2) {
+  const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+
+  // 비밀번호는 영어, 숫자, 특수기호를 모두 포함해야 하며 8자 이상이어야 합니다.
+  if (pw1 !== pw2) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return false;
+  } else if (!regex.test(pw1)) {
+    alert("비밀번호는 영문, 숫자, 특수기호를 모두 포함하고 8자 이상이어야 합니다.");
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
+const auth = getAuth(app);
+
+// check variables
+let isCheckEmail = false;
+let isCheckNickname = false;
+let lastCheckEmail = "";
+let lastCheckNickname = "";
 
 const SignUp = () => {
+  // useStates
+  const [email, setEmail, changeEmail] = getUserInput("");
+  const [password1, setPassword1, changePassword1] = getUserInput("");
+  const [password2, setPassword2, changePassword2] = getUserInput("");
+  const [name, setName, changeName] = getUserInput("");
+  const [gender, setGender, changeGender] = getUserInput("");
+  let [nickname, setNickname, changeNickname] = getUserInput("");
+  const [sport, setSport, changeSport] = getUserInput([]);
+  const [team, setTeam, chagneTeam] = getUserInput([]);
+
+  // navigate callbacks
   const navigate = useNavigate();
 
   const onHomeIconClick = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
-  const onEmailCheckClick = useCallback(() => {
-    navigate("/main/login");
-  }, [navigate])
+  // check button callbacks
+  const onEmailCheckClick = useCallback(async () => {
+    try {
+      if (!emailCheck(email)) {
+        isCheckEmail = false;
+        return alert("유효하지 않은 이메일 형식입니다");
+      }
 
-  const onNicknameCheckClick = useCallback(() => {
-    navigate("/main/login");
-  }, [navigate]);
+      const usersRef = collection(db, 'UserInfo');
+      const q = query(usersRef, where('email', '==', email));
+      const queryResult = await getDocs(q);
+      
+      if (queryResult.empty) {
+        isCheckEmail = true;
+        lastCheckEmail = email;
+        return alert('사용 가능한 이메일입니다.');
+      } else {
+        isCheckEmail = false;
+        return alert('해당 이메일은 이미 사용 중입니다.');
+      }
+    } catch (error) {
+      console.error('이메일 중복 확인 오류:', error.message);
+    }
+  }, [email]);
 
-  const onSubmitClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+  const onNicknameCheckClick = useCallback(async () => {
+    try {
+      if (nickname === "") {
+        nickname = name;
+        setNickname(name);
+      } else if (nickname.length > 10) {
+        isCheckNickname = false;
+        return alert("닉네임은 10자 이하여야 합니다.");
+      }
 
-  const [selectGender, setGender] = useState(null);
-  const handleGender = (gender) => {
-    setGender(gender);
-  };
+      const usersRef = collection(db, 'UserInfo');
+      const q = query(usersRef, where('nickname', '==', nickname));
+      const queryResult = await getDocs(q);
+      
+      if (queryResult.empty) {
+        isCheckNickname = true;
+        lastCheckNickname = nickname;
+        return alert('사용 가능한 닉네임입니다.');
+      } else {
+        return alert('해당 닉네임은 이미 사용 중입니다.');
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 오류:', error.message);
+    }
+  }, [name, nickname]);
 
-  const [selectSport, setSport] = useState([]);
+  // submit callback
+  const onSubmitClick = useCallback(async () => {
+    try {
+      if (!isCheckEmail || lastCheckEmail !== email) {
+        return alert("이메일 확인을 해주세요");
+      } else if (name === "") {
+        return alert("이름을 입력 해주세요");
+      } else if (password1 === "") {
+        return alert("비밀번호를 입력 해주세요");
+      } else if (password2 === "") {
+        return alert("비밀번호 확인을 입력 해주세요");
+      } 
+
+      if (!passwordCheck(password1, password2)) return;
+      
+      if (gender === "") {
+        return alert("성별을 선택해 주세요");
+      }
+
+      if (!isCheckNickname || lastCheckNickname !== nickname) {
+        // console.log(isCheckNickname);
+        // console.log(lastCheckNickname);
+        // console.log(nickname);
+        return alert("닉네임 확인을 해주세요");
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password2);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "UserInfo", user.uid), {
+        email: email,
+        name: name,
+        gender: gender,
+        nickname: (nickname === "" ? name : nickname),
+        sport: sport && sport.length > 0 ? sport: null,
+        team: team && team.length > 0 ? team: null,
+      });
+      
+      console.log("회원가입 성공:", user.uid);
+      
+      navigate("/login");
+    } catch (error) {
+      console.error("회원가입 실패:", error.message);
+    }
+  }, [navigate, email, password1, password2, name, gender, nickname, sport, team]);
+
+  // array data handler
   const handleSport = e => {
     const { value } = e.target;
-    if (!selectSport.includes(value)) {
-      setSport([...selectSport, value]);
+    if (!sport.includes(value)) {
+      setSport([...sport, value]);
     }
   };
-
-  const [selectTeam, setTeam] = useState([]);
   const handleTeam = e => {
     const { value } = e.target;
-    if (!selectTeam.includes(value)) {
-      setTeam([...selectTeam, value]);
+    if (!team.includes(value)) {
+      setTeam([...team, value]);
     }
   };
 
@@ -98,28 +230,44 @@ const SignUp = () => {
                 <input
                   type="text"
                   className={styles.noneDupInput}
+                  onChange={changeEmail}
                 />
-                <b className={styles.dupCheck} onClick={onEmailCheckClick}> 중복확인 </b>
+                <b className={styles.dupCheck} onClick={onEmailCheckClick}> 확인 </b>
               </div>
             </div>
             <div className={styles.infoContainer}>
               <b className={styles.infoTitle}>이름</b>
               <input
                 className={styles.input}
+                type="text"
+                onChange={changeName}
+              />
+            </div>
+
+            <div className={styles.infoContainer}>
+              <b className={styles.infoTitle}>비밀번호</b>
+              <input
+                className={styles.input}
+                type="password"
+                onChange={changePassword1}
               />
             </div>
             <div className={styles.infoContainer}>
+              <b className={styles.infoTitle}>비밀번호 확인</b>
+              <input
+                className={styles.input}
+                type="password"
+                onChange={changePassword2}
+              />
+            </div>
+
+            <div className={styles.infoContainer}>
               <b className={styles.infoTitle}>성별</b>
-              
-              <div className={styles.gender}>
-                <Button 
-                  onClick={() => handleGender('male')}
-                > 남자 </Button>
-                <Button
-                  onClick={() => handleGender('female')}
-                > 여자 </Button>
-                {/* <p> 선택한 성별: {selectGender}</p> */}
-              </div>
+              <DropDown
+                list={GENDER}
+                data={gender}
+                onChange={changeGender}
+              />
             </div>
 
             <div className={styles.infoContainer}>
@@ -128,16 +276,17 @@ const SignUp = () => {
                 <input
                   type="text"
                   className={styles.noneDupInput}
-                  placeholder="홍길동"
+                  onChange={changeNickname}
+                  placeholder={name}
                 />
-                <b className={styles.dupCheck} onClick={onNicknameCheckClick}> 중복확인 </b>
+                <b className={styles.dupCheck} onClick={onNicknameCheckClick}> 확인 </b>
               </div>
             </div>
 
             <div className={styles.infoContainer}>
               <b className={styles.infoTitle}> 관심 스포츠 (선택) </b>
               <div className={styles.listContainer}>
-                {selectSport.length === 0 ? '없음' : selectSport.map((value, index) => (
+                {sport.length === 0 ? '없음' : sport.map((value, index) => (
                   <div key={index} className={styles.list}>
                     {SPORT.find(sport => sport.value === value)?.name}
                     <button 
@@ -147,23 +296,20 @@ const SignUp = () => {
                   </div>
                 ))}
               </div>
-              <Dropdown value="" onChange={handleSport}>
-                <option value="" disabled>선택</option>
-                {SPORT.map((sport) => (
-                  <option key={sport.id} value={sport.value}>
-                    {sport.name}
-                  </option>
-                ))}
-              </Dropdown>
+              <DropDown
+                list={SPORT}
+                data={sport}
+                onChange={handleSport}
+              />
 
             </div>
 
             <div className={styles.infoContainer}>
               <b className={styles.infoTitle}> 관심 스포츠팀 (선택) </b>
               <div className={styles.listContainer}>
-                {selectTeam.length === 0 ? '없음' : selectTeam.map((value, index) => (
+                {team.length === 0 ? '없음' : team.map((value, index) => (
                   <div key={index} className={styles.list}>
-                    {SPORT.find(sport => sport.value === value)?.name}
+                    {TEAM.find(sport => sport.value === value)?.name}
                     <button 
                       className={styles.delBtn}
                       onClick={() => setTeam(prev => prev.filter(item => item !== value))}>
@@ -171,14 +317,11 @@ const SignUp = () => {
                   </div>
                 ))}
               </div>
-              <Dropdown value="" onChange={handleTeam}>
-                <option value="" disabled>선택</option>
-                {SPORT.map((sport) => (
-                  <option key={sport.id} value={sport.value}>
-                    {sport.name}
-                  </option>
-                ))}
-              </Dropdown>
+              <DropDown
+                list={TEAM}
+                data={team}
+                onChange={handleTeam}
+              />
             </div>
           </div>
 
