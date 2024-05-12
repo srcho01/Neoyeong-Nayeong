@@ -1,0 +1,43 @@
+.popUpFrame {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 700px;
+  background-color: var(--color-white);
+  padding: 20px;
+  gap: 15px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10x;
+}
+
+.title {
+  display: inline-block;
+  border: 0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.icon {
+  width: 25px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.card {
+  overflow-y: auto;
+}
+
+.Submit {
+  text-align: center;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
