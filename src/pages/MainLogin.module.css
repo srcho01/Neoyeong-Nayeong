@@ -42,5 +42,4 @@
 .main {
   display: flex;
   flex-direction: column;
-  border: solid tomato 1px;
 }
