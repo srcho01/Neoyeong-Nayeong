@@ -1,22 +1,57 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import styles from "./Login.module.css";
 
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { app } from '../firebase';
+
+import { useDispatch } from 'react-redux';
+import { userSlice } from '../store/userSlice';
+
+
 const Login = () => {
+  const auth = getAuth(app);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onHomeIconClick = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
-  const onLoginSubmitClick = useCallback(() => {
-    navigate("/main/login");
-  }, [navigate]);
-
   const onSignupClick = useCallback(() => {
     navigate("/signup");
   }, [navigate]);
+
+
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const onLoginSubmitClick = useCallback(async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("로그인 성공");
+
+      // store
+      dispatch(userSlice.actions.login({uid: user.uid}));
+
+      // 로그인 후 다음 페이지로 이동하거나 다른 작업 수행
+      navigate("/main/login");
+    } catch (error) {
+      console.error("로그인 실패:", error.message);
+      // 실패 처리 로직 추가
+    }
+  }, [email, password, navigate, dispatch]);
+
 
   return (
     <div className={styles.frame}>
@@ -41,11 +76,13 @@ const Login = () => {
             className={styles.frameEmail}
             placeholder="이메일"
             type="text"
+            onChange={onEmailChange}
           />
           <input
             className={styles.framePassword}
             placeholder="비밀번호"
             type="password"
+            onChange={onPasswordChange}
           />
         </div>
 
