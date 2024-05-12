@@ -2,7 +2,6 @@
   background-color: var(--color-white);
   max-width: 1280px;
   margin: 0 auto;
-  border: solid blue 2px;
 }
 
 .header {
@@ -24,7 +23,7 @@
 .imageContainer {
   display: flex;
   align-self: center;
-  gap: 5px;
+  gap: 7px;
 }
 
 .image {

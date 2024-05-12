@@ -4,34 +4,30 @@ import styles from "./MainLogin.module.css";
 
 import Datetime from "../components/Datetime";
 import Logo from "../components/Logo"
+import MainBody from "../components/MainBody"
 
-import FrameComponent6 from "../components/FrameComponent6";
-import FrameComponent5 from "../components/FrameComponent5";
-import FrameComponent4 from "../components/FrameComponent4";
+import { useDispatch } from 'react-redux';
+import { userSlice } from '../store/userSlice';
 
-
-const MainLogout = () => {
+const MainLogin = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentDateTime = Datetime();
 
-  const onPrayanaWhereInnovationDriveClick = useCallback(() => {
-    navigate("/2");
-  }, [navigate]);
-
-  const onLoginTextButtonClick = useCallback(() => {
-      navigate("/login");
-  }, [navigate]);
-
   const onLogout = useCallback(() => {
-      navigate("/");
+    navigate("/");
+    
+    // redux delete
+    dispatch(userSlice.actions.logout());
+
   }, [navigate]);
 
   const onMypage = useCallback(() => {
-      navigate("/mypage");
+    navigate("/mypage");
   }, [navigate]);
 
   const onMatch = useCallback(() => {
-      navigate("/match/state");
+    navigate("/match/state");
   }, [navigate]);
 
   return (
@@ -50,15 +46,12 @@ const MainLogout = () => {
         <b className={styles.time}> 지금은 {currentDateTime}입니다 </b>
       </header>
 
+      <MainBody />
+
       <div className={styles.main}>
-        <FrameComponent6
-          onPrayanaWhereInnovationDriveClick={onPrayanaWhereInnovationDriveClick}
-        />
-        <FrameComponent5 />
-        <FrameComponent4 />
       </div>
     </div>
   );
 };
 
-export default MainLogout;
+export default MainLogin;
