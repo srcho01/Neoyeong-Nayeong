@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,700&display=swap");
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-inter: Inter;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-gray: #888;
+  --color-gainsboro: rgba(221, 221, 221, 0.67);
+  --color-silver-100: rgba(196, 196, 196, 0.67);
+  --color-gold: #ffdc02;
+  --color-khaki: rgba(255, 240, 153, 0.67);
+  --color-palegoldenrod: #c8e6a8;
+  --color-palegoldenrod-200: rgba(200, 230, 168, 0.67);
+}
