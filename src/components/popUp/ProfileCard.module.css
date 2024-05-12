@@ -1,0 +1,106 @@
+.popUpFrame {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.type {
+  display: inline-block;
+  border: 0;
+  padding: 5px 10px;
+  background-color: var(--color-palegoldenrod-200);
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.icon {
+  width: 25px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.input {
+  justify-self: center;
+  text-align: left;
+  color: var(--color-black);
+  border: 3px solid black;
+  outline: 0;
+  background-color: var(--color-gainsboro);
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-black);
+  min-width: 200px;
+  padding: 10px 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3px solid black;
+  background-color: var(--color-khaki);
+  border-radius: 20px;
+  flex-grow: 1;
+  padding: 10px 20px;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+}
+.profileImage {
+  width: 150px;
+}
+.name, .li {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-black);
+  margin: 0 0 20px;
+}
+.li {
+  margin: 0 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 30px;
+}
+.infoContainer, .button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+.button {
+  justify-content: center;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.Submit {
+  text-align: center;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
