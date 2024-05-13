@@ -1,57 +1,152 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { db } from "../firebase";
+import { doc, getDoc, getDocs, setDoc, collection, query, where } from "firebase/firestore";
 
-import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectUserUid } from "../store/userSlice"
+
 import styles from "./MyPage.module.css";
 
-const Dropdown = styled.select`
-  padding: 8px;
-  margin-left: 10px;
-  border-radius: 10px;
-  border: 3px solid black;
-  width: 100px;
-  height: 40px;
-  font-size: 16px;
-  color: black;
-`;
+import DropDown from "../components/Dropdown";
+import { SPORT, TEAM } from '../components/Data';
 
-const SPORT = [
-  {id: 1, name: '야구', value: '야구'},
-  {id: 2, name: '축구', value: '축구'},
-  {id: 3, name: 'LoL', value: 'LoL'},
-]
 
+let isCheckNickname = true;
+let lastCheckNickname = "";
 
 const MyPage = () => {
   const navigate = useNavigate();
+  // Get user info
+  const uid = useSelector(selectUserUid); // redux store uid
+
+  // user info useState
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    name: "",
+    gender: "",
+    nickname: "",
+    sport: [],
+    team: []
+  });
+  
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const docRef = doc(db, "UserInfo", uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserInfo(data);
+          lastCheckNickname = userInfo.nickname;
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    if (uid) {
+      fetchUserInfo();
+    }
+  }, [db, uid]);
+
+  // useEffect(() => {
+  //   console.log(userInfo.nickname);
+  // }, [userInfo]);
+  
 
   const onHomeIconClick = useCallback(() => {
     navigate("/main/login");
   }, [navigate]);
 
-  const onNicknameCheckClick = useCallback(() => {
-    navigate("/main/login");
-  }, [navigate]);
+  const onNicknameCheckClick = useCallback(async () => {
+    try {
+      if (userInfo.nickname === "") {
+        userInfo.nickname = userInfo.name;
+        setNickname(userInfo.name);
+      } else if (userInfo.nickname.length > 10) {
+        isCheckNickname = false;
+        return alert("닉네임은 10자 이하여야 합니다.");
+      }
 
-  const onSubmitClick = useCallback(() => {
-    navigate("/main/login");
-  }, [navigate]);
+      const usersRef = collection(db, 'UserInfo');
+      const q = query(usersRef, where('nickname', '==', userInfo.nickname));
+      const queryResult = await getDocs(q);
+      
+      if (queryResult.empty) {
+        isCheckNickname = true;
+        lastCheckNickname = userInfo.nickname;
+        return alert('사용 가능한 닉네임입니다.');
+      } else {
+        return alert('해당 닉네임은 이미 사용 중입니다.');
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 오류:', error.message);
+    }
+  }, [userInfo.name, userInfo.nickname]);
 
 
-  const [selectSport, setSport] = useState([]);
-  const handleSport = e => {
+  const onSubmitClick = useCallback(async () => {
+    if (!isCheckNickname || lastCheckNickname !== userInfo.nickname) {
+      console.log(isCheckNickname);
+      console.log(lastCheckNickname);
+      console.log(userInfo.nickname);
+      return alert("닉네임 확인을 해주세요");
+    }
+
+    console.log("정보 업데이트 성공:", userInfo);
+    alert("성공적으로 변경되었습니다.");
+
+    await setDoc(doc(db, "UserInfo", uid), userInfo);
+
+  }, [userInfo, uid]);
+
+  const changeNickname = useCallback((e) => {
+    let { value } = e.target;
+    if (value === "") {
+      value = userInfo.name;
+    }
+    
+    setUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
+      nickname: value
+    }));
+      
+  }, [userInfo.name]);
+
+  const addSport = e => {
     const { value } = e.target;
-    if (!selectSport.includes(value)) {
-      setSport([...selectSport, value]);
+    if (!userInfo.sport.includes(value)) {
+      setUserInfo(prevUserInfo => ({
+        ...prevUserInfo,
+        sport: [...prevUserInfo.sport, value]
+      }));
     }
   };
-
-  const [selectTeam, setTeam] = useState([]);
-  const handleTeam = e => {
+  const deleteSport = (value) => {
+    setUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
+      sport: prevUserInfo.sport.filter(item => item !== value)
+    }));
+  };
+  
+  const addTeam = e => {
     const { value } = e.target;
-    if (!selectTeam.includes(value)) {
-      setTeam([...selectTeam, value]);
+    if (!userInfo.team.includes(value)) {
+      setUserInfo(prevUserInfo => ({
+        ...prevUserInfo,
+        team: [...prevUserInfo.team, value]
+      }));
     }
+  };
+  const deleteTeam = (value) => {
+    setUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
+      team: prevUserInfo.team.filter(item => item !== value)
+    }));
   };
 
   return (
@@ -82,7 +177,7 @@ const MyPage = () => {
               <b className={styles.infoTitle}>이메일</b>
               <input
                 className={styles.inputDisabled}
-                value="원래이메일.kookmin.ac.kr"
+                value={userInfo.email}
                 disabled
               />
             </div>
@@ -90,7 +185,7 @@ const MyPage = () => {
               <b className={styles.infoTitle}>이름</b>
               <input
                 className={styles.inputDisabled}
-                value="홍길동"
+                value={userInfo.name}
                 disabled
               />
             </div>
@@ -98,7 +193,7 @@ const MyPage = () => {
               <b className={styles.infoTitle}>성별</b>
               <input
                 className={styles.inputDisabled}
-                value="남자"
+                value={userInfo.gender}
                 disabled
               />
             </div>
@@ -109,57 +204,54 @@ const MyPage = () => {
                 <input
                   type="text"
                   className={styles.noneDupInput}
-                  placeholder="홍길동"
+                  onChange={changeNickname}
+                  placeholder={userInfo.nickname}
                 />
-                <b className={styles.dupCheck} onClick={onNicknameCheckClick}> 중복확인 </b>
+                <b className={styles.dupCheck} onClick={onNicknameCheckClick}> 확인 </b>
               </div>
             </div>
 
             <div className={styles.infoContainer}>
               <b className={styles.infoTitle}> 관심 스포츠 (선택) </b>
               <div className={styles.listContainer}>
-                {selectSport.length === 0 ? '없음' : selectSport.map((value, index) => (
+                {userInfo.sport.length === 0 ? '없음' : userInfo.sport.map((value, index) => (
                   <div key={index} className={styles.list}>
                     {SPORT.find(sport => sport.value === value)?.name}
+                    {/* {filteredSport.map(sport => (
+                      <span key={sport.id}>{sport.name}</span>
+                    ))} */}
                     <button 
                       className={styles.delBtn}
-                      onClick={() => setSport(prev => prev.filter(item => item !== value))}>
+                      onClick={() => deleteSport(value)}>
                     삭제</button>
                   </div>
                 ))}
               </div>
-              <Dropdown value="" onChange={handleSport}>
-                <option value="" disabled>선택</option>
-                {SPORT.map((sport) => (
-                  <option key={sport.id} value={sport.value}>
-                    {sport.name}
-                  </option>
-                ))}
-              </Dropdown>
-
+              <DropDown
+                list={SPORT}
+                data={userInfo.sport}
+                onChange={addSport}
+              />
             </div>
 
             <div className={styles.infoContainer}>
               <b className={styles.infoTitle}> 관심 스포츠팀 (선택) </b>
               <div className={styles.listContainer}>
-                {selectTeam.length === 0 ? '없음' : selectTeam.map((value, index) => (
+                {userInfo.team.length === 0 ? '없음' : userInfo.team.map((value, index) => (
                   <div key={index} className={styles.list}>
-                    {SPORT.find(sport => sport.value === value)?.name}
+                    {TEAM.find(team => team.value === value)?.name}
                     <button 
                       className={styles.delBtn}
-                      onClick={() => setTeam(prev => prev.filter(item => item !== value))}>
+                      onClick={() => deleteTeam(value)}>
                     삭제</button>
                   </div>
                 ))}
               </div>
-              <Dropdown value="" onChange={handleTeam}>
-                <option value="" disabled>선택</option>
-                {SPORT.map((sport) => (
-                  <option key={sport.id} value={sport.value}>
-                    {sport.name}
-                  </option>
-                ))}
-              </Dropdown>
+              <DropDown
+                list={TEAM}
+                data={userInfo.team}
+                onChange={addTeam}
+              />
             </div>
           </div>
 
