@@ -7,7 +7,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from '../firebase';
 
 import { useDispatch } from 'react-redux';
-import { userSlice } from '../store/userSlice';
+import { setUserUid } from '../store/userSlice';
 
 
 const Login = () => {
@@ -42,7 +42,7 @@ const Login = () => {
       console.log("로그인 성공");
 
       // store
-      dispatch(userSlice.actions.login({uid: user.uid}));
+      dispatch(setUserUid.login({uid: user.uid}));
 
       // 로그인 후 다음 페이지로 이동하거나 다른 작업 수행
       navigate("/main/login");
