@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './MainBody.module.css';
 
-const Schedule = ({team1, team2, month, day, time, loc}) => {
+const Schedule = ({team1, team2, month, day, hour, minute, loc}) => {
   return (
     <div className={styles.sche}>
       <div className={styles.scheText}>
@@ -13,7 +13,7 @@ const Schedule = ({team1, team2, month, day, time, loc}) => {
           {month}월 {day}일
         </div>
         <div className={styles.scheText}>
-          {time}
+          {hour}:{minute}
         </div>
       </div>
 
@@ -25,18 +25,19 @@ const Schedule = ({team1, team2, month, day, time, loc}) => {
 };
 
 const schedules = [];
-  for (let i = 0; i < 30; i++) {
-    schedules.push(
-      <Schedule 
-          team1="키움"
-          team2="LG인데 만약에 팀명이 진짜 겁나 길면?"
-          month="4"
-          day="18"
-          time="14:00"
-          loc="사직구장인데 어쩌고 저쩌고 만약에 안사직구장?"
-      />
-    );
-  }
+for (let i = 0; i < 30; i++) {
+  schedules.push(
+    <Schedule 
+        team1="키움"
+        team2="LG인데 만약에 팀명이 진짜 겁나 길면?"
+        month={4}
+        day={18}
+        hour={14}
+        minute={0}
+        loc="사직구장인데 어쩌고 저쩌고 만약에 안사직구장?"
+    />
+  );
+}
 
 const Component = ({imageSrc}) => {
   return (
