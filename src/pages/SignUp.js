@@ -5,38 +5,12 @@ import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } f
 import { collection, query, where, getDocs, doc, setDoc } from 'firebase/firestore';
 import { app, db } from '../firebase';
 
-import styled from "styled-components";
 import styles from "./SignUp.module.css";
 
 import getUserInput from "../hooks/getUserInput"
+import DropDown from "../components/Dropdown";
 import { SPORT, GENDER, TEAM } from '../components/Data';
 
-
-const Dropdown = styled.select`
-  padding: 8px;
-  margin-left: 10px;
-  border-radius: 10px;
-  border: 3px solid black;
-  width: 100px;
-  height: 40px;
-  font-size: 16px;
-  color: black;
-`;
-
-const DropDown = ({list, data, onChange}) => {
-  return (
-    <Dropdown value={typeof data === "string" ? data : ""} onChange={onChange}>
-      <option value="" disabled>선택</option>
-      {list.map((item) => (
-        <option 
-          key={item.id}
-          value={item.value}
-        > {item.name}
-        </option>
-      ))}
-    </Dropdown>
-  );
-};
 
 function emailCheck(email_address) {
 	const email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -80,7 +54,7 @@ const SignUp = () => {
   const [gender, setGender, changeGender] = getUserInput("");
   let [nickname, setNickname, changeNickname] = getUserInput("");
   const [sport, setSport, changeSport] = getUserInput([]);
-  const [team, setTeam, chagneTeam] = getUserInput([]);
+  const [team, setTeam, changeTeam] = getUserInput([]);
 
   // navigate callbacks
   const navigate = useNavigate();
