@@ -7,28 +7,30 @@ import PostOffline from "./PostOffline"
 import PostOnline from "./PostOnline"
 import Logo from '../Logo';
 
-const PostSelectType = ({onClose}) => {
-  const [isPostOfflineOpen, setPostOfflineOpen] = useState(false);
-  const [isPostOnlineOpen, setPostOnlineOpen] = useState(false);
+const PostSelectType = ({onClose, match}) => {
+  console.log(match);
+
+  const [isPostOffline, setPostOffline] = useState(false);
+  const [isPostOnline, setPostOnline] = useState(false);
 
   const openPostOffline = () => {
-    setPostOfflineOpen(true);
+    setPostOffline(true);
   };
   const openPostOnline = () => {
-    setPostOnlineOpen(true);
+    setPostOnline(true);
   };
 
   const closePostOffline = useCallback(() => {
     if (onClose) {
       onClose();
     }
-    setPostOfflineOpen(false);
+    setPostOffline(false);
   }, [onClose]);
   const closePostOnline = useCallback(() => {
     if (onClose) {
       onClose();
     }
-    setPostOnlineOpen(false);
+    setPostOnline(false);
   }, [onClose]);
 
   return (
@@ -42,23 +44,23 @@ const PostSelectType = ({onClose}) => {
           <b className={styles.type} onClick={openPostOnline}>온라인</b>
         </div>
 
-      {isPostOfflineOpen && (
+      {isPostOffline && (
         <PortalPopup
           overlayColor="rgba(113, 113, 113, 0.3)"
           placement="Centered"
           onOutsideClick={closePostOffline}
         >
-          <PostOffline onClose={closePostOffline} />
+          <PostOffline onClose={closePostOffline} match={match}/>
         </PortalPopup>
       )}
 
-      {isPostOnlineOpen && (
+      {isPostOnline && (
         <PortalPopup
           overlayColor="rgba(113, 113, 113, 0.3)"
           placement="Centered"
           onOutsideClick={closePostOnline}
         >
-          <PostOnline onClose={closePostOnline} />
+          <PostOnline onClose={closePostOnline} match={match}/>
         </PortalPopup>
       )}
 
