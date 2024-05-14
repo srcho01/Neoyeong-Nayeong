@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, query, where, getDocs, doc, setDoc } from 'firebase/firestore';
 import { app, db } from '../firebase';
 
@@ -14,9 +14,9 @@ import { SPORT, GENDER, TEAM } from '../components/Data';
 
 function emailCheck(email_address) {
 	const email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-	if(!email_regex.test(email_address)){ 
+	if (!email_regex.test(email_address)) { 
 		return false; 
-	}else{
+	} else {
 		return true;
 	}
 }
