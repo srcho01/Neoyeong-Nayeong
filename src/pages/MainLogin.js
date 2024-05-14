@@ -46,7 +46,7 @@ const MainLogin = () => {
         <b className={styles.time}> 지금은 {currentDateTime}입니다 </b>
       </header>
 
-      <MainBody />
+      <MainBody isLogout={false} />
 
       <div className={styles.main}>
       </div>

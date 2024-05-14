@@ -8,21 +8,17 @@ import soccer from "../data/kleague"
 import lol from "../data/lck"
 
 
-const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc}) => {
+const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc, isLogout}) => {
   const navigate = useNavigate();
-  
-  const query = `sport=${sport.toLowerCase()}\
-&id=${id}\
-&team1=${team1}\
-&team2=${team2}\
-&month=${month}\
-&day=${day}\
-&hour=${hour}\
-&minute=${minute}\
-&loc=${loc}`;
 
   const handleClick = useCallback(() => {
-    navigate(`/match/board/value?${query}`);
+    if (isLogout) {
+      alert("로그인이 필요한 서비스입니다");
+      navigate("/login")
+    } else {
+      const query = `sport=${sport.toLowerCase()[0]}&id=${id}&team1=${team1}&team2=${team2}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&loc=${loc}`;
+      navigate(`/match/board/value?${query}`);
+    }
   }, [navigate]);
 
   return (
@@ -61,11 +57,9 @@ function getSchedules(sport) {
 
   try {
     const today = new Date();
+    const todayIndex = (today.getMonth() + 1) * 100 + today.getDate();
 
-    // 객체의 키 값을 배열로 추출
     const keys = Object.keys(data);
-
-    // 키 값을 숫자로 변환하여 정렬
     const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
 
     let cnt = 0;
@@ -76,9 +70,9 @@ function getSchedules(sport) {
 
       const month = data[key].month;
       const day = data[key].day;
-      const gameDate = new Date(today.getFullYear(), month - 1, day);
+      const gameIndex = month * 100 + day;
       
-      if (gameDate >= today || (gameDate.getDate() === today.getDate() && gameDate.getMonth() === today.getMonth())) {
+      if (gameIndex >= todayIndex) {
         schedules.push({
           'id': key,
           ...data[key]
@@ -90,12 +84,10 @@ function getSchedules(sport) {
   } catch (error) {
     console.error("Error fetching user info:", error);
   }
-
-  console.log(schedules);
   return schedules;
 }
 
-const Component = ({imageSrc, sport}) => {
+const Component = ({imageSrc, sport, isLogout}) => {
   const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
@@ -111,6 +103,7 @@ const Component = ({imageSrc, sport}) => {
       <div className={styles.scheContainer}>
         {schedules.map((schedule, index) => (
           <Schedule 
+            key={index}
             sport={sport}
             id={schedule.id}
             team1={schedule.team1}
@@ -120,6 +113,7 @@ const Component = ({imageSrc, sport}) => {
             hour={schedule.hour}
             minute={schedule.minute}
             loc={schedule.loc}
+            isLogout={isLogout}
           />
         ))}
       </div>
@@ -127,20 +121,23 @@ const Component = ({imageSrc, sport}) => {
   );
 };
 
-function MainBody() {
+const MainBody = ( {isLogout} ) => {
   return (
     <div className={styles.frame}>
       <Component
         imageSrc = "/kbo.png"
         sport = "Baseball"
+        isLogout={isLogout}
       />
       <Component
         imageSrc = "/kleague.png"
         sport = "Soccer"
+        isLogout={isLogout}
       />
       <Component
         imageSrc = "/lck.png"
         sport = "LoL"
+        isLogout={isLogout}
       />
     </div>
   );
