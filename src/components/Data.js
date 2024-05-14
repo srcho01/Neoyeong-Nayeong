@@ -1,6 +1,6 @@
 export const SPORT = [
-    {id: 1, name: '야구', value: 'baseball'},
-    {id: 2, name: '축구', value: 'soccer'},
+    {id: 1, name: '야구', value: '야구'},
+    {id: 2, name: '축구', value: '축구'},
     {id: 3, name: 'LoL', value: 'LoL'},
 ]
 export const GENDER = [
