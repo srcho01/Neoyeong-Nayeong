@@ -34,7 +34,10 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
 
       <Route path="/match/state" element={<MatchState />} />
-      <Route path="/match/board" element={<MatchBoard />} />
+      
+      <Route path="/match/board/baseball/value" element={<MatchBoard />}/>
+      <Route path="/match/board/soccer/value" element={<MatchBoard />}/>
+      <Route path="/match/board/lol/value" element={<MatchBoard />}/>
 
       <Route path="/mypage" element={<MyPage />} />
       

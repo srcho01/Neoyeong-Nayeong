@@ -1,13 +1,30 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from './MainBody.module.css';
 
 import { db } from "../firebase";
 import { getDocs, collection } from "firebase/firestore";
 
-const Schedule = ({team1, team2, month, day, hour, minute, loc}) => {
+
+const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc}) => {
+  const navigate = useNavigate();
+  
+  const query = `id=${id}\
+&team1=${team1}\
+&team2=${team2}\
+&month=${month}\
+&day=${day}\
+&hour=${hour}\
+&minute=${minute}\
+&loc=${loc}`;
+
+  const handleClick = useCallback(() => {
+    navigate(`/match/board/${sport.toLowerCase()}/value?${query}`);
+  }, [navigate]);
+
   return (
-    <div className={styles.sche}>
+    <div className={styles.sche} onClick={handleClick}>
       <div className={styles.scheText}>
         {team1} vs {team2}
       </div>
@@ -17,7 +34,7 @@ const Schedule = ({team1, team2, month, day, hour, minute, loc}) => {
           {month}월 {day}일
         </div>
         <div className={styles.scheText}>
-          {hour}:{minute < 9 ? `0${minute}` : minute}
+          {hour < 9 ? `0${hour}` : hour}:{minute < 9 ? `0${minute}` : minute}
         </div>
       </div>
 
@@ -33,22 +50,26 @@ async function getSchedules(sport) {
 
   try {
     const colloecitonRef = collection(db, `Sche${sport}`);
-    const queryResult = await getDocs(colloecitonRef);
+    let queryResult = await getDocs(colloecitonRef);
+    queryResult = queryResult.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })).sort((a, b) => a.id - b.id);
 
     const today = new Date();
     let count = 0;
 
     queryResult.forEach((doc) => {
       if (count >= 10) return; // 최대 10개
-      const data = doc.data();
-      const { month, day } = data;
-
-      // 데이터의 날짜를 Date 객체로 변환
+      const { month, day, ...data } = doc; // 데이터 추출
       const gameDate = new Date(today.getFullYear(), month - 1, day);
-
+    
       // 오늘 이후의 데이터인 경우 스케줄에 추가
       if (gameDate >= today || (gameDate.getDate() === today.getDate() && gameDate.getMonth() === today.getMonth())) {
-        schedules.push(data);
+        schedules.push({
+          id: doc.id,
+          ...doc
+        });
         count++;
       }
     });
@@ -70,8 +91,6 @@ const Component = ({imageSrc, sport}) => {
     }
 
     fetchSchedules();
-
-    console.log(schedules);
   }, [sport]);
 
   return (
@@ -82,6 +101,8 @@ const Component = ({imageSrc, sport}) => {
       <div className={styles.scheContainer}>
         {schedules.map((schedule, index) => (
           <Schedule 
+            sport={sport}
+            id={schedule.id}
             team1={schedule.team1}
             team2={schedule.team2}
             month={schedule.month}
