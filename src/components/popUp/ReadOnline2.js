@@ -2,7 +2,44 @@ import { useCallback } from "react";
 import styles from "./ReadOnline2.module.css";
 import ProfileCard from "./ProfileCard";
 
-const ReadOnline2 = ({close, allClose}) => {
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+
+import { useSelector } from "react-redux";
+import { selectUserUid } from "../../store/userSlice"
+
+
+const ReadOnline2 = ({close, allClose, post}) => {
+  const uid = useSelector(selectUserUid); // redux store uid
+
+  const onApplyClick = useCallback(async() => {
+    try {
+      console.log(post);
+
+      if (post.acceptedUid.length === post.pnum) {
+        alert("모집이 마감된 게시글입니다");
+        return;
+      }
+      
+      const ref = doc(db, "Board", `${post.matchId}`, "Posts", `${post.id}`);
+      await updateDoc(ref, {
+        applyUid: [...post.applyUid, uid]
+      });
+
+      console.log(uid, ": 신청 성공", "포스트", post.matchId, post.id);
+
+      alert("신청에 성공했습니다")
+
+    } catch (error) {
+      console.error('신청하기 실패:', error.message);
+      alert("[Error] 신청에 실패했습니다");
+    }
+
+    if (allClose) {
+      allClose();
+    }
+  }, [uid, post, allClose]);
+
   const onBackClick = useCallback(() => {
     if (close) {
       close();
@@ -31,16 +68,16 @@ const ReadOnline2 = ({close, allClose}) => {
       </div>
 
       <div className={styles.titleBox}>
-        제목제목 온라인 제목 제목이 매우 길어요 진짜 길어요 계속 길어요
+        {post.title}
       </div>
 
-      <div className={styles.card}> <ProfileCard /> </div>
+      <div className={styles.card}> <ProfileCard post={post} /> </div>
 
       <div className={styles.submitContainer}>
         <div className={styles.Submit} onClick={onBackClick}>
           이전
         </div>
-        <div className={styles.Submit} onClick={onReturnClick}>
+        <div className={styles.Submit} onClick={onApplyClick}>
           신청
         </div>
       </div>

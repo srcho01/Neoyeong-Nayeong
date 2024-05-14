@@ -2,7 +2,13 @@ import { useCallback } from "react";
 import styles from "./ReadOffline2.module.css";
 import ProfileCard from "./ProfileCard";
 
-const ReadOffline2 = ({close, allClose}) => {
+import { useSelector } from "react-redux";
+import { selectUserUid } from "../../store/userSlice"
+
+
+const ReadOffline2 = ({close, allClose, post}) => {
+  const uid = useSelector(selectUserUid); // redux store uid
+
   const onBackClick = useCallback(() => {
     if (close) {
       close();
@@ -31,10 +37,10 @@ const ReadOffline2 = ({close, allClose}) => {
       </div>
 
       <div className={styles.titleBox}>
-        제목제목 오프라인 제목 제목이 매우 길어요 진짜 길어요 계속 길어요
+        {post.title}
       </div>
 
-      <div className={styles.card}> <ProfileCard /> </div>
+      <div className={styles.card}> <ProfileCard post={post} /> </div>
 
       <div className={styles.submitContainer}>
         <div className={styles.Submit} onClick={onBackClick}>

@@ -3,7 +3,7 @@ import styles from "./ReadOnline1.module.css";
 import ReadOnline2 from "./ReadOnline2";
 import PortalPopup from "../PortalPopup";
 
-const ReadOnline1 = ({onClose}) => {
+const ReadOnline1 = ({onClose, post}) => {
   const onReturnClick = useCallback(() => {
     if (onClose) {
       onClose();
@@ -39,41 +39,31 @@ const ReadOnline1 = ({onClose}) => {
           src="/close-icon.svg"
         />
       </div>
-
+  
       <div className={styles.infoContainer}>
         <b className={styles.infoTitle}>제목</b>
         <div className={styles.input}>
-          제목제목 온라인 제목 ㅁㄴㄻㄴㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㅇㄻㄴㅇㄻㄴㅇ
+          {post.title}
+        </div>
+      </div>
+
+      <div className={styles.infoContainer}>
+        <b className={styles.infoTitle}> 지역 </b>
+        <div className={styles.input}>
+          지역
         </div>
       </div>
 
       <div className={styles.infoContainer}>
         <b className={styles.infoTitle}>모집인원</b>
         <div className={styles.input}>
-          1
+          {post.pnum}
         </div>
       </div>
 
       <div className={styles.articleContainer}>
         <b className={styles.infoTitle}>하고 싶은 말 (선택) </b>
-        <pre className={styles.article}>
-{`줄바꿈 해줘
-줄바꿈 해줘
-줄바꿈 해줘
-줄바꿈 해줘
-줄바꿈 해줘
-줄바꿈 해줘
-이게 뭐냐
-이거 맞냐
-진짜 뭐 이런 게 다 있냐
-개오바라고 생각한다
-sa
-f
-asd
-f
-a
-`}
-        </pre>
+        <pre className={styles.article}> {post.text} </pre>
       </div>
       
       <div className={styles.Submit} onClick={open}>
@@ -86,7 +76,7 @@ a
           placement="Centered"
           onOutsideClick={onReturnClick}
         >
-          <ReadOnline2 close={close} allClose={allClose}/>
+          <ReadOnline2 close={close} allClose={allClose} post={post}/>
         </PortalPopup>
       )}
 
