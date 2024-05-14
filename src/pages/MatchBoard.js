@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./MatchBoard.module.css";
 import Logo from "../components/Logo"
@@ -8,13 +8,30 @@ import ReadOffline1 from "../components/popUp/ReadOffline1"
 import ReadOnline1 from "../components/popUp/ReadOnline1"
 import PostSelectType from "../components/popUp/PostSelectType"
 
+import { db } from "../firebase";
+import { doc, getDoc, getDocs, setDoc, collection, query, where } from "firebase/firestore";
+
+
+const MakeCard = ({post, setter, setThisPost}) => {
+  const handleCardClick = () => {
+    setter(true);
+    setThisPost(post);
+  };
+
+  return (
+    <div className={styles.matchingPost} onClick={handleCardClick}>
+      <b className={styles.t}> {post.title} </b>
+      <b className={styles.type}> {post.type === "offline" ? "오프라인" : "온라인"} </b>
+    </div>
+  );
+};
 
 const MatchBoard = () => {
   // Get query string
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const params = ['id', 'team1', 'team2', 'month', 'day', 'hour', 'minute', 'loc'];
+  const params = ['sport', 'id', 'team1', 'team2', 'month', 'day', 'hour', 'minute', 'loc'];
   const matchInfo = {};
 
   params.forEach(param => {
@@ -29,13 +46,39 @@ const MatchBoard = () => {
   const [offline, setOffline] = useState(false);
   const [online, setOnline] = useState(false);
   const [plus, setPlus] = useState(false);
+  const [thisPost, setThisPost] = useState("");
 
+  const key = `${matchInfo.sport}${matchInfo.id}`;
 
   const navigate = useNavigate();
   const onHomeIconClick = useCallback(() => {
     navigate("/main/login");
   }, [navigate]);
 
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const docSnap = await getDocs(collection(db, "Board", `${key}`, "Posts"));
+        const fetchedPosts = [];
+  
+        docSnap.forEach(doc => {
+          fetchedPosts.push({
+            id: doc.id,
+            matchId: key,
+            ...doc.data()
+          });
+        });
+        
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+  
+    fetchPosts();
+  }, []);
 
   return (
     <div className={styles.frame}>
@@ -59,7 +102,7 @@ const MatchBoard = () => {
       <div className={styles.head}>
         <b className={styles.matchInfo1}> {matchInfo.team1} vs {matchInfo.team2} </b>
         <b className={styles.matchInfo2}> {matchInfo.month}월 {matchInfo.day}일 {matchInfo.hour}:{matchInfo.minute} </b>
-        <b className={styles.matchInfo3}> 사직 </b>
+        <b className={styles.matchInfo3}> {matchInfo.loc} </b>
         <img
           className={styles.icon}
           loading="lazy"
@@ -69,24 +112,28 @@ const MatchBoard = () => {
       </div>
 
       <div className={styles.matchingContainer}>
-        <div className={styles.matchingPost} onClick={() => setOffline(true)}>
-          <b className={styles.t}>저랑 야구장 같이 가실 분 2명 구합니다! </b>
-          <b className={styles.type}>오프라인</b>
-        </div>
-
-        <div className={styles.matchingPost} onClick={() => setOnline(true)}>
-          <b className={styles.t}>저랑 야구장 같이 가실 분 2명 구합니다! </b>
-          <b className={styles.type}>온라인</b>
-        </div>
+        {posts.map((post, index) => (
+          <MakeCard
+            key={index}
+            setter={() => {
+              post.type === "online" ? setOnline(true) : setOffline(true);
+            }}
+            post={post}
+            setThisPost={setThisPost}
+          />
+        ))}
 
         {offline && (
-        <PortalPopup
-          overlayColor="rgba(113, 113, 113, 0.3)"
-          placement="Centered"
-          onOutsideClick={() => setOffline(false)}
-        >
-          <ReadOffline1 onClose={() => setOffline(false)} />
-        </PortalPopup>
+          <PortalPopup
+            overlayColor="rgba(113, 113, 113, 0.3)"
+            placement="Centered"
+            onOutsideClick={() => setOffline(false)}
+          >
+            <ReadOffline1 
+              onClose={() => setOffline(false)}
+              post={thisPost}
+            />
+          </PortalPopup>
         )}
 
         {online && (
@@ -95,7 +142,10 @@ const MatchBoard = () => {
             placement="Centered"
             onOutsideClick={() => setOnline(false)}
           >
-            <ReadOnline1 onClose={() => setOnline(false)} />
+            <ReadOnline1 
+              onClose={() => setOnline(false)}
+              post={thisPost}
+            />
           </PortalPopup>
         )}
 
@@ -105,7 +155,7 @@ const MatchBoard = () => {
             placement="Centered"
             onOutsideClick={() => setPlus(false)}
           >
-            <PostSelectType onClose={() => setPlus(false)} />
+            <PostSelectType onClose={() => setPlus(false)} match={key} />
           </PortalPopup>
         )}
       </div>
