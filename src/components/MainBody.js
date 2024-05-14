@@ -3,14 +3,16 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from './MainBody.module.css';
 
-import { db } from "../firebase";
-import { getDocs, collection } from "firebase/firestore";
+import baseball from "../data/kbo"
+import soccer from "../data/kleague"
+import lol from "../data/lck"
 
 
 const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc}) => {
   const navigate = useNavigate();
   
-  const query = `id=${id}\
+  const query = `sport=${sport.toLowerCase()}\
+&id=${id}\
 &team1=${team1}\
 &team2=${team2}\
 &month=${month}\
@@ -20,7 +22,7 @@ const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc}) => {
 &loc=${loc}`;
 
   const handleClick = useCallback(() => {
-    navigate(`/match/board/${sport.toLowerCase()}/value?${query}`);
+    navigate(`/match/board/value?${query}`);
   }, [navigate]);
 
   return (
@@ -45,32 +47,43 @@ const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc}) => {
   );
 };
 
-async function getSchedules(sport) {
+function getSchedules(sport) {
   const schedules = [];
+  let data = null;
+
+  if (sport === "Baseball") {
+    data = baseball;
+  } else if (sport === "Soccer") {
+    data = soccer;
+  } else if (sport === "LoL") {
+    data = lol;
+  }
 
   try {
-    const colloecitonRef = collection(db, `Sche${sport}`);
-    let queryResult = await getDocs(colloecitonRef);
-    queryResult = queryResult.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })).sort((a, b) => a.id - b.id);
-
     const today = new Date();
-    let count = 0;
 
-    queryResult.forEach((doc) => {
-      if (count >= 10) return; // 최대 10개
-      const { month, day, ...data } = doc; // 데이터 추출
+    // 객체의 키 값을 배열로 추출
+    const keys = Object.keys(data);
+
+    // 키 값을 숫자로 변환하여 정렬
+    const sortedKeys = keys.sort((a, b) => parseInt(a) - parseInt(b));
+
+    let cnt = 0;
+    sortedKeys.forEach(key => {
+      if (cnt >= 10) {
+        return;
+      }
+
+      const month = data[key].month;
+      const day = data[key].day;
       const gameDate = new Date(today.getFullYear(), month - 1, day);
-    
-      // 오늘 이후의 데이터인 경우 스케줄에 추가
+      
       if (gameDate >= today || (gameDate.getDate() === today.getDate() && gameDate.getMonth() === today.getMonth())) {
         schedules.push({
-          id: doc.id,
-          ...doc
-        });
-        count++;
+          'id': key,
+          ...data[key]
+        })
+        cnt += 1;
       }
     });
 
@@ -78,6 +91,7 @@ async function getSchedules(sport) {
     console.error("Error fetching user info:", error);
   }
 
+  console.log(schedules);
   return schedules;
 }
 
@@ -85,12 +99,8 @@ const Component = ({imageSrc, sport}) => {
   const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
-    async function fetchSchedules() {
-      const fetchData = await getSchedules(sport);
-      setSchedules(fetchData);
-    }
-
-    fetchSchedules();
+    const fetchData = getSchedules(sport);
+    setSchedules(fetchData);
   }, [sport]);
 
   return (
