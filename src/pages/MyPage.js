@@ -27,7 +27,9 @@ const MyPage = () => {
     gender: "",
     nickname: "",
     sport: [],
-    team: []
+    team: [],
+    write: [],
+    apply: [],
   });
 
   const [lastCheckNickname, setLastCheckNickname] = useState("");
@@ -99,12 +101,12 @@ const MyPage = () => {
       return alert("닉네임 확인을 해주세요");
     }
 
-    console.log("정보 업데이트 성공:", userInfo);
-    alert("성공적으로 변경되었습니다.");
-
     setPrevNickname(userInfo.nickname);
     isCheckNickname = true;
     await setDoc(doc(db, "UserInfo", uid), userInfo);
+
+    console.log("정보 업데이트 성공:", userInfo);
+    alert("성공적으로 변경되었습니다.");
 
   }, [userInfo, uid]);
 

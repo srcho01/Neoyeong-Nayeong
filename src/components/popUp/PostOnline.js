@@ -3,14 +3,14 @@ import styles from "./PostOnline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
 import { db } from '../../firebase';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useSelector } from "react-redux";
 import { selectUserUid } from "../../store/userSlice"
 
 const PostOnline = ({onClose, match}) => {
   // useStates
   const [title, setTitle, changeTitle] = getUserInput("");
-  const [pnum, setNum, changeNum] = getUserInput(0);
+  const [pnum, setNum, changeNum] = getUserInput(1);
   const [loc, setLoc, changeLoc] = getUserInput("");
   const [text, setText, changeText] = getUserInput("");
 
@@ -29,9 +29,10 @@ const PostOnline = ({onClose, match}) => {
       return;
     }
     
-    const postData = {
+    const post = {
       "writer": uid,
-      "type": "online",
+      "matchId": match,
+      "type": "온라인",
       "title": title,
       "pnum": pnum,
       "loc": loc,
@@ -39,15 +40,21 @@ const PostOnline = ({onClose, match}) => {
       "applyUid": [],
       "acceptedUid": []
     }
-    console.log(postData);
 
     try {
-      const ref = doc(collection(db, "Board", `${match}`, "Posts"));
-      await setDoc(ref, postData);
+      const ref = collection(db, "Board", `${match}`, "Posts");
+      const response = await addDoc(ref, post);
+
+      // write user info
+      const uref = doc(db, "UserInfo", `${uid}`);
+      await updateDoc(uref, {
+        write: arrayUnion(`${match}_${response.id}`)
+      });
+
       console.log('온라인 글 등록 성공');
 
     } catch (error) {
-      console.error('오프라인 글 등록 실패:', error.message);
+      console.error('온라인 글 등록 실패:', error.message);
       alert("글 등록에 실패했습니다!");
     }
 

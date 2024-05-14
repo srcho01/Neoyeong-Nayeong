@@ -5,7 +5,7 @@ import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 
-const ProfileCard = ({post}) => {
+const ProfileCard = ({uid}) => {
   // user info useState
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -19,7 +19,7 @@ const ProfileCard = ({post}) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const docRef = doc(db, "UserInfo", post.writer);
+        const docRef = doc(db, "UserInfo", uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -33,10 +33,10 @@ const ProfileCard = ({post}) => {
       }
     };
 
-    if (post.writer) {
+    if (uid) {
       fetchUserInfo();
     }
-  }, [post.writer]);
+  }, [uid]);
 
   const renderArray = (arr) => {
     return arr.join(', ');

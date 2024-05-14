@@ -3,14 +3,14 @@ import styles from "./PostOffline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
 import { db } from '../../firebase';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useSelector } from "react-redux";
 import { selectUserUid } from "../../store/userSlice"
 
 const PostOffline = ({onClose, match}) => {
   // useStates
   const [title, setTitle, changeTitle] = getUserInput("");
-  const [pnum, setNum, changeNum] = getUserInput(0);
+  const [pnum, setNum, changeNum] = getUserInput(1);
   const [text, setText, changeText] = getUserInput("");
 
   // Get user info
@@ -28,17 +28,27 @@ const PostOffline = ({onClose, match}) => {
       return;
     }
     
-    const postData = {
+    const post = {
       "writer": uid,
-      "type": "offline",
+      "matchId": match,
+      "type": "오프라인",
       "title": title,
       "pnum": pnum,
-      "text": text
+      "text": text,
+      "applyUid": [],
+      "acceptedUid": []
     }
 
     try {
-      const ref = doc(collection(db, "Board", `${match}`, "Posts"));
-      await setDoc(ref, postData);
+      const ref = collection(db, "Board", `${match}`, "Posts");
+      const response = await addDoc(ref, post);
+
+      // write user info
+      const uref = doc(db, "UserInfo", `${uid}`);
+      await updateDoc(uref, {
+        write: arrayUnion(`${match}_${response.id}`)
+      });
+
       console.log('오프라인 글 등록 성공');
 
     } catch (error) {

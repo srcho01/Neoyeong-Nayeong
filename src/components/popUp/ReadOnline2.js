@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import styles from "./ReadOnline2.module.css";
 import ProfileCard from "./ProfileCard";
 
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase";
 
 import { useSelector } from "react-redux";
@@ -21,9 +21,17 @@ const ReadOnline2 = ({close, allClose, post}) => {
         return;
       }
       
+      // write post
       const ref = doc(db, "Board", `${post.matchId}`, "Posts", `${post.id}`);
       await updateDoc(ref, {
-        applyUid: [...post.applyUid, uid]
+        applyUid: arrayUnion(uid)
+      });
+
+      // write user info
+      const uref = doc(db, "UserInfo", `${uid}`);
+      console.log(uref);
+      await updateDoc(uref, {
+        apply: arrayUnion(`${post.matchId}_${post.id}`)
       });
 
       console.log(uid, ": 신청 성공", "포스트", post.matchId, post.id);
@@ -71,7 +79,7 @@ const ReadOnline2 = ({close, allClose, post}) => {
         {post.title}
       </div>
 
-      <div className={styles.card}> <ProfileCard post={post} /> </div>
+      <div className={styles.card}> <ProfileCard uid={post.writer}/> </div>
 
       <div className={styles.submitContainer}>
         <div className={styles.Submit} onClick={onBackClick}>

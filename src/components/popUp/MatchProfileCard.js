@@ -2,7 +2,11 @@ import { useCallback } from "react";
 import styles from "./MatchProfileCard.module.css";
 import ProfileCard from "./ProfileCard";
 
-const MatchProfileCard = ({close, allClose}) => {
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../../firebase";
+
+
+const MatchProfileCard = ({close, allClose, uid, post}) => {
   const onBackClick = useCallback(() => {
     if (close) {
       close();
@@ -14,6 +18,41 @@ const MatchProfileCard = ({close, allClose}) => {
       allClose();
     }
   }, [allClose]);
+
+  const onAcceptClick = useCallback(async() => {
+    console.log(post);
+
+    const ref = doc(db, "Board", `${post.matchId}`, "Posts", `${post.id}`);
+    const docSnap = await getDoc(ref);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (data.acceptedUid.length === data.pnum) {
+        alert("모집이 완료되었습니다")
+        if (allClose) {
+          allClose();
+        }
+        return;
+      }
+    }
+
+    // 게시글의 acceptedUid에 추가
+    try {
+      // write post
+      await updateDoc(ref, {
+        acceptedUid: arrayUnion(uid)
+      });
+
+    } catch (error) {
+      console.error('추가 실패:', error.message);
+      alert("[Error] 신청에 실패했습니다");
+    }
+
+    if (close) {
+      close();
+    }
+  }, [close, allClose]);
+
 
   return (
     <div className={styles.popUpFrame}>
@@ -30,13 +69,13 @@ const MatchProfileCard = ({close, allClose}) => {
         />
       </div>
 
-      <div className={styles.card}> <ProfileCard /> </div>
+      <div className={styles.card}> <ProfileCard uid={uid} /> </div>
 
       <div className={styles.submitContainer}>
         <span className={styles.submit} onClick={onBackClick}>
           이전
         </span>
-        <span className={styles.submit} onClick={onReturnClick}>
+        <span className={styles.submit} onClick={onAcceptClick}>
           수락
         </span>
       </div>

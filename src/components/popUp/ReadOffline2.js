@@ -2,12 +2,51 @@ import { useCallback } from "react";
 import styles from "./ReadOffline2.module.css";
 import ProfileCard from "./ProfileCard";
 
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../../firebase";
+
 import { useSelector } from "react-redux";
 import { selectUserUid } from "../../store/userSlice"
 
 
 const ReadOffline2 = ({close, allClose, post}) => {
   const uid = useSelector(selectUserUid); // redux store uid
+
+  const onApplyClick = useCallback(async() => {
+    try {
+      console.log(post);
+
+      if (post.acceptedUid.length === post.pnum) {
+        alert("모집이 마감된 게시글입니다");
+        return;
+      }
+      
+      // write post
+      const ref = doc(db, "Board", `${post.matchId}`, "Posts", `${post.id}`);
+      await updateDoc(ref, {
+        applyUid: arrayUnion(uid)
+      });
+
+      // write user info
+      const uref = doc(db, "UserInfo", `${uid}`);
+      console.log(uref);
+      await updateDoc(uref, {
+        apply: arrayUnion(`${post.matchId}_${post.id}`)
+      });
+
+      console.log(uid, ": 신청 성공", "포스트", post.matchId, post.id);
+
+      alert("신청에 성공했습니다")
+
+    } catch (error) {
+      console.error('신청하기 실패:', error.message);
+      alert("[Error] 신청에 실패했습니다");
+    }
+
+    if (allClose) {
+      allClose();
+    }
+  }, [uid, post, allClose]);
 
   const onBackClick = useCallback(() => {
     if (close) {
@@ -40,13 +79,13 @@ const ReadOffline2 = ({close, allClose, post}) => {
         {post.title}
       </div>
 
-      <div className={styles.card}> <ProfileCard post={post} /> </div>
+      <div className={styles.card}> <ProfileCard uid={post.writer} /> </div>
 
       <div className={styles.submitContainer}>
         <div className={styles.Submit} onClick={onBackClick}>
           이전
         </div>
-        <div className={styles.Submit} onClick={onReturnClick}>
+        <div className={styles.Submit} onClick={onApplyClick}>
           신청
         </div>
       </div>

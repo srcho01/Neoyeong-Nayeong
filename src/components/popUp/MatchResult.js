@@ -1,9 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./MatchResult.module.css";
-import PortalPopup from "../PortalPopup";
+
+import { db } from "../../firebase";
+import { getDocs, collection, query, where } from "firebase/firestore";
 
 
-const PersonComponent = ({ profileSrc, nickname, email }) => {
+const PersonComponent = ({ profileSrc, userInfo }) => {
   return (
     <div className={styles.personContainer}>
       <img
@@ -13,34 +15,51 @@ const PersonComponent = ({ profileSrc, nickname, email }) => {
         src={profileSrc}
       />
       <div className={styles.nickname}>
-        {nickname}
+        {userInfo.nickname}
       </div>
       <div className={styles.email}>
-        {email}
+        {userInfo.email}
       </div>
     </div>
   );
 };
 
-const MatchResult = ({onClose}) => {
+const MatchResult = ({onClose, post}) => {
   const onReturnClick = useCallback(() => {
     if (onClose) {
       onClose();
     }
   }, [onClose]);
 
-  const people = [];
-  for (let i = 0; i < 15; i++) {
-    people.push(
-      <PersonComponent
-        key={i}
-        profileSrc="/default-profile.png"
-        nickname={`닉네임${i + 1}`}
-        email="qwerty.kookmin.ac.kr"
-      />
-    );
-  }
+  const [acceptList, setApplyList] = useState([]);
+  useEffect(() => {
+    const people = post.acceptedUid;
+    const temp = [];
 
+    const fetch = async () => {
+      try {
+        const q = query(collection(db, "UserInfo"), where("__name__", "in", people));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          temp.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        setApplyList(temp);
+
+      } catch (error) {
+        console.error("Error fetching documents with ID:", error);
+      }
+    };
+
+    if (people.length > 0) {
+      fetch();
+    }
+  }, []);
+
+
+  console.log(acceptList);
   return (
     <div className={styles.popUpFrame}>
       <div className={styles.head}>
@@ -57,11 +76,17 @@ const MatchResult = ({onClose}) => {
       </div>
 
       <div className={styles.titleBox}>
-        제목제목 오프라인 제목 제목이 매우 길어요 진짜 길어요 계속 길어요
+        {post.title}
       </div>
 
       <div className={styles.peopleList}>
-        {people}
+        {acceptList.map((userInfo, index) => (
+          <PersonComponent
+            key={index}
+            profileSrc="/default-profile.png"
+            userInfo={userInfo}
+          />
+        ))}
       </div>
     </div>
   );

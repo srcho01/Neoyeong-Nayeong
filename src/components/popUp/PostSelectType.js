@@ -8,8 +8,6 @@ import PostOnline from "./PostOnline"
 import Logo from '../Logo';
 
 const PostSelectType = ({onClose, match}) => {
-  console.log(match);
-
   const [isPostOffline, setPostOffline] = useState(false);
   const [isPostOnline, setPostOnline] = useState(false);
 

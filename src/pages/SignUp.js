@@ -150,6 +150,8 @@ const SignUp = () => {
         nickname: (nickname === "" ? name : nickname),
         sport: sport && sport.length > 0 ? sport: null,
         team: team && team.length > 0 ? team: null,
+        write: [],
+        apply: [],
       });
       
       console.log("회원가입 성공:", user.uid);

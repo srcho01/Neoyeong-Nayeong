@@ -9,7 +9,7 @@ import ReadOnline1 from "../components/popUp/ReadOnline1"
 import PostSelectType from "../components/popUp/PostSelectType"
 
 import { db } from "../firebase";
-import { doc, getDoc, getDocs, setDoc, collection, query, where } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 
 
 const MakeCard = ({post, setter, setThisPost}) => {
@@ -21,7 +21,7 @@ const MakeCard = ({post, setter, setThisPost}) => {
   return (
     <div className={styles.matchingPost} onClick={handleCardClick}>
       <b className={styles.t}> {post.title} </b>
-      <b className={styles.type}> {post.type === "offline" ? "오프라인" : "온라인"} </b>
+      <b className={styles.type}> {post.type} </b>
     </div>
   );
 };
@@ -116,7 +116,7 @@ const MatchBoard = () => {
           <MakeCard
             key={index}
             setter={() => {
-              post.type === "online" ? setOnline(true) : setOffline(true);
+              post.type === "온라인" ? setOnline(true) : setOffline(true);
             }}
             post={post}
             setThisPost={setThisPost}

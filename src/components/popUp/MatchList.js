@@ -1,10 +1,18 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./MatchList.module.css";
 import MatchProfileCard from "./MatchProfileCard";
 import PortalPopup from "../PortalPopup";
 
+import { db } from "../../firebase";
+import { getDocs, collection, query, where } from "firebase/firestore";
 
-const PersonComponent = ({ profileSrc, nickname, openHandler, isAccepted }) => {
+
+const PersonComponent = ({ profileSrc, userInfo, open, setThisUid, isAccepted }) => {
+  const handleClick = () => {
+    open(true);
+    setThisUid(userInfo.id);
+  };
+
   return (
     <div className={styles.personContainer}>
       <img
@@ -14,9 +22,9 @@ const PersonComponent = ({ profileSrc, nickname, openHandler, isAccepted }) => {
         src={profileSrc}
       />
       <div className={styles.nickname}>
-        {nickname}
+        {userInfo.nickname}
       </div>
-      <div className={styles.info} onClick={openHandler}>
+      <div className={styles.info} onClick={handleClick}>
         정보
       </div>
       <div className={`${isAccepted ? styles.acceptTrue : styles.acceptFalse}`}>
@@ -26,46 +34,56 @@ const PersonComponent = ({ profileSrc, nickname, openHandler, isAccepted }) => {
   );
 };
 
-const MatchList = ({onClose}) => {
+const MatchList = ({onClose, post}) => {
   const onReturnClick = useCallback(() => {
     if (onClose) {
       onClose();
     }
   }, [onClose]);
 
-  const [isCurrentOpen, setCurrentOpen] = useState(false);
-  const open = useCallback(() => {
-    setCurrentOpen(true);
-  });
-  const close = useCallback(() => {
-    setCurrentOpen(false);
-  });
+  const [thisUid, setThisUid] = useState("");
+  const [isCurrent, setCurrent] = useState(false);
 
   const allClose = useCallback(() => {
     if (onClose) {
       onClose();
     }
-    setCurrentOpen(false);
+    setCurrent(false);
   }, [onClose]);
 
-  const people = [];
-  for (let i = 0; i < 15; i++) {
-    people.push(
-      <PersonComponent
-        key={i}
-        profileSrc="/default-profile.png"
-        nickname={`닉네임${i + 1}`}
-        openHandler={open}
-        isAccepted={true ? i % 5 == 0 : false}
-      />
-    );
-  }
+  
+  const [applyList, setApplyList] = useState([]);
+  useEffect(() => {
+    const people = post.applyUid;
+    const temp = [];
+
+    const fetch = async () => {
+      try {
+        const q = query(collection(db, "UserInfo"), where("__name__", "in", people));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          temp.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        setApplyList(temp);
+
+      } catch (error) {
+        console.error("Error fetching documents with ID:", error);
+      }
+    };
+
+    if (people.length > 0) {
+      fetch();
+    }
+  }, []);
 
   return (
     <div className={styles.popUpFrame}>
       <div className={styles.head}>
         <div className={styles.type}>
-          오프라인
+          {post.type}
         </div>
         <img
           className={styles.icon}
@@ -77,15 +95,24 @@ const MatchList = ({onClose}) => {
       </div>
 
       <div className={styles.titleBox}>
-        제목제목 오프라인 제목 제목이 매우 길어요 진짜 길어요 계속 길어요
+        {post.title}
       </div>
 
       <div className={styles.text}>
-        모집 현황 1 / 2
+        모집 현황 {post.acceptedUid.length} / {post.pnum}
       </div>
       
       <div className={styles.peopleList}>
-        {people}
+        {applyList.map((userInfo, index) => (
+          <PersonComponent
+            key={index}
+            profileSrc="/default-profile.png"
+            userInfo={userInfo}
+            setThisUid={setThisUid}
+            open={() => setCurrent(true)}
+            isAccepted={post.acceptedUid.includes(userInfo.id)}
+          />
+        ))}
       </div>
 
       <div className={styles.submitContainer}>
@@ -94,13 +121,18 @@ const MatchList = ({onClose}) => {
         </span>
       </div>
 
-      {isCurrentOpen && (
+      {isCurrent && (
         <PortalPopup
           overlayColor="rgba(0, 0, 0, 0)"
           placement="Centered"
           onOutsideClick={onReturnClick}
         >
-          <MatchProfileCard close={close} allClose={allClose}/>
+          <MatchProfileCard
+            close={() => setCurrent(false)}
+            allClose={allClose}
+            uid={thisUid}
+            post={post}
+          />
         </PortalPopup>
       )}
 
