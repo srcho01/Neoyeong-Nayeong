@@ -80,3 +80,9 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+.people {
+  display: flex;
+  font-size: 20;
+  gap: 10px;
+}
