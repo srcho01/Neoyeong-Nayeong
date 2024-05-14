@@ -49,9 +49,11 @@
 .matchingContainer {
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
   margin: 30px;
+  overflow-y: auto;
 }
 
 .matchingWait, .matchingFinish {
