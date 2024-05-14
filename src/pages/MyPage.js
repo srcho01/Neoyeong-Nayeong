@@ -16,6 +16,7 @@ let isCheckNickname = true;
 
 const MyPage = () => {
   const navigate = useNavigate();
+  
   // Get user info
   const uid = useSelector(selectUserUid); // redux store uid
 
@@ -57,10 +58,10 @@ const MyPage = () => {
   }, [db, uid]);
 
   useEffect(() => {
-    console.log(isCheckNickname);
-    console.log("current:", userInfo.nickname);
-    console.log("prev nickname:", prevNickname);
-    console.log("last check:", lastCheckNickname);
+    // console.log(isCheckNickname);
+    // console.log("current:", userInfo.nickname);
+    // console.log("prev nickname:", prevNickname);
+    // console.log("last check:", lastCheckNickname);
   }, [userInfo, isCheckNickname, lastCheckNickname, prevNickname]);
   
 
@@ -224,9 +225,6 @@ const MyPage = () => {
                 {userInfo.sport.length === 0 ? '없음' : userInfo.sport.map((value, index) => (
                   <div key={index} className={styles.list}>
                     {SPORT.find(sport => sport.value === value)?.name}
-                    {/* {filteredSport.map(sport => (
-                      <span key={sport.id}>{sport.name}</span>
-                    ))} */}
                     <button 
                       className={styles.delBtn}
                       onClick={() => deleteSport(value)}>
