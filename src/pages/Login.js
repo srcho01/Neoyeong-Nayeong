@@ -48,7 +48,7 @@ const Login = () => {
       navigate("/main/login");
     } catch (error) {
       console.error("로그인 실패:", error.message);
-      // 실패 처리 로직 추가
+      alert("다시 시도해주세요");
     }
   }, [email, password, navigate, dispatch]);
 
