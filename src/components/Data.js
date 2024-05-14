@@ -9,16 +9,16 @@ export const GENDER = [
 ]
 
 export const TEAM = [
-    {id: 1, name: '야구 - LG 트윈스', value: '야구 - LG 트윈스'},
-    {id: 2, name: '야구 - KT 위즈', value: '야구 - KT 위즈'},
-    {id: 3, name: '야구 - SSG 랜더스', value: '야구 - SSG 랜더스'},
-    {id: 4, name: '야구 - NC 다이노스', value: '야구 - NC 다이노스'},
-    {id: 5, name: '야구 - 두산 베어스', value: '야구 - 두산 베어스'},
-    {id: 6, name: '야구 - KIA 타이거즈', value: '야구 - KIA 타이거즈'},
-    {id: 7, name: '야구 - 롯데 자이언츠', value: '야구 - 롯데 자이언츠'},
-    {id: 8, name: '야구 - 삼성 라이온즈', value: '야구 - 삼성 라이온즈'},
-    {id: 9, name: '야구 - 한화 이글스', value: '야구 - 한화 이글스'},
-    {id: 10, name: '야구 - 키움 히어로즈', value: '야구 - 키움 히어로즈'},
+    {id: 1, name: '야구 - LG', value: '야구 - LG'},
+    {id: 2, name: '야구 - KT', value: '야구 - KT'},
+    {id: 3, name: '야구 - SSG', value: '야구 - SSG'},
+    {id: 4, name: '야구 - NC', value: '야구 - NC'},
+    {id: 5, name: '야구 - 두산', value: '야구 - 두산'},
+    {id: 6, name: '야구 - KIA', value: '야구 - KIA'},
+    {id: 7, name: '야구 - 롯데', value: '야구 - 롯데'},
+    {id: 8, name: '야구 - 삼성', value: '야구 - 삼성'},
+    {id: 9, name: '야구 - 한화', value: '야구 - 한화'},
+    {id: 10, name: '야구 - 키움', value: '야구 - 키움'},
 
     { id: 11, name: '축구 - 강원', value: '축구 - 강원'},
     { id: 12, name: '축구 - 광주', value: '축구 - 광주'},
