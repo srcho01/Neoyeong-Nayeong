@@ -13,7 +13,6 @@ import { SPORT, TEAM } from '../components/Data';
 
 
 let isCheckNickname = true;
-let lastCheckNickname = "";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -29,6 +28,9 @@ const MyPage = () => {
     sport: [],
     team: []
   });
+
+  const [lastCheckNickname, setLastCheckNickname] = useState("");
+  const [prevNickname, setPrevNickname] = useState("");
   
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -39,7 +41,8 @@ const MyPage = () => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setUserInfo(data);
-          lastCheckNickname = userInfo.nickname;
+          setLastCheckNickname(data.nickname);
+          setPrevNickname(data.nickname);
         } else {
           console.log("No such document!");
         }
@@ -53,9 +56,12 @@ const MyPage = () => {
     }
   }, [db, uid]);
 
-  // useEffect(() => {
-  //   console.log(userInfo.nickname);
-  // }, [userInfo]);
+  useEffect(() => {
+    console.log(isCheckNickname);
+    console.log("current:", userInfo.nickname);
+    console.log("prev nickname:", prevNickname);
+    console.log("last check:", lastCheckNickname);
+  }, [userInfo, isCheckNickname, lastCheckNickname, prevNickname]);
   
 
   const onHomeIconClick = useCallback(() => {
@@ -64,10 +70,7 @@ const MyPage = () => {
 
   const onNicknameCheckClick = useCallback(async () => {
     try {
-      if (userInfo.nickname === "") {
-        userInfo.nickname = userInfo.name;
-        setNickname(userInfo.name);
-      } else if (userInfo.nickname.length > 10) {
+      if (userInfo.nickname.length > 10) {
         isCheckNickname = false;
         return alert("닉네임은 10자 이하여야 합니다.");
       }
@@ -76,11 +79,12 @@ const MyPage = () => {
       const q = query(usersRef, where('nickname', '==', userInfo.nickname));
       const queryResult = await getDocs(q);
       
-      if (queryResult.empty) {
+      if (queryResult.empty || lastCheckNickname === userInfo.nickname || prevNickname === userInfo.nickname) {
         isCheckNickname = true;
-        lastCheckNickname = userInfo.nickname;
+        setLastCheckNickname(userInfo.nickname);
         return alert('사용 가능한 닉네임입니다.');
       } else {
+        isCheckNickname = false;
         return alert('해당 닉네임은 이미 사용 중입니다.');
       }
     } catch (error) {
@@ -90,32 +94,35 @@ const MyPage = () => {
 
 
   const onSubmitClick = useCallback(async () => {
-    if (!isCheckNickname || lastCheckNickname !== userInfo.nickname) {
-      console.log(isCheckNickname);
-      console.log(lastCheckNickname);
-      console.log(userInfo.nickname);
+    if (!isCheckNickname) {
       return alert("닉네임 확인을 해주세요");
     }
 
     console.log("정보 업데이트 성공:", userInfo);
     alert("성공적으로 변경되었습니다.");
 
+    setPrevNickname(userInfo.nickname);
+    isCheckNickname = true;
     await setDoc(doc(db, "UserInfo", uid), userInfo);
 
   }, [userInfo, uid]);
 
   const changeNickname = useCallback((e) => {
     let { value } = e.target;
-    if (value === "") {
-      value = userInfo.name;
-    }
     
+    if (value === "") {
+      value = prevNickname;
+      isCheckNickname = true;
+    } else {
+      isCheckNickname = false;
+    }
+
     setUserInfo(prevUserInfo => ({
       ...prevUserInfo,
       nickname: value
     }));
-      
-  }, [userInfo.name]);
+
+  }, [userInfo.name, prevNickname]);
 
   const addSport = e => {
     const { value } = e.target;
