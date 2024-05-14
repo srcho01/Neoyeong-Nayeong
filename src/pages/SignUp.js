@@ -9,7 +9,7 @@ import styles from "./SignUp.module.css";
 
 import getUserInput from "../hooks/getUserInput"
 import DropDown from "../components/Dropdown";
-import { SPORT, GENDER, TEAM } from '../components/Data';
+import { SPORT, GENDER, TEAM } from '../data/dropdownData';
 
 
 function emailCheck(email_address) {

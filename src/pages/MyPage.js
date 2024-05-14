@@ -9,7 +9,7 @@ import { selectUserUid } from "../store/userSlice"
 import styles from "./MyPage.module.css";
 
 import DropDown from "../components/Dropdown";
-import { SPORT, TEAM } from '../components/Data';
+import { SPORT, TEAM } from '../data/dropdownData';
 
 
 let isCheckNickname = true;
