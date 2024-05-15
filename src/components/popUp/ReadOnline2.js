@@ -40,9 +40,8 @@ const ReadOnline2 = ({close, allClose, post}) => {
       alert("[Error] 신청에 실패했습니다");
     }
 
-    if (allClose) {
-      allClose();
-    }
+    window.location.reload();
+
   }, [uid, post, allClose]);
 
   const onBackClick = useCallback(() => {
