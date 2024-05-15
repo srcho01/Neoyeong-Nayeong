@@ -75,7 +75,7 @@ const Login = () => {
           <Logo isLogout={true}/>
         </div>
 
-        <h1 className={styles.loginText}>로그인</h1>
+        <h1 className={styles.loginText}> LOGIN </h1>
 
         <div className={styles.inputBoxContainer}>
           <input

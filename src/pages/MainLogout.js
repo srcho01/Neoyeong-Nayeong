@@ -22,7 +22,7 @@ const MainLogout = () => {
           <div className={styles.logo}>
             <Logo isLogout={true}/>
           </div>
-          <b className={styles.loginTextButton} onClick={onLoginTextButtonClick}> 로그인 </b>
+          <b className={styles.loginTextButton} onClick={onLoginTextButtonClick}> LOGIN </b>
         </div>
         <b className={styles.time}> 지금은 {currentDateTime}입니다 </b>
       </header>

@@ -23,7 +23,7 @@
 .imageContainer {
   display: flex;
   align-self: center;
-  gap: 7px;
+  gap: 25px;
 }
 
 .image {
@@ -44,11 +44,11 @@
   flex-direction: column;
 }
 
-.nickname {
+.text {
   display: flex;
   align-items: center;
-  margin-right: 10px;
   font-family: inherit;
   font-size: 17px;
   font-weight: 700;
+  cursor: pointer;
 }

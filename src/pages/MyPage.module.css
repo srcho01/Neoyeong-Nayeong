@@ -1,36 +1,19 @@
-.fullScreen {
-  background-color: var(--color-white);
-  overflow: auto;
-}
-
 .frame {
-  position: relative;
+  background-color: var(--color-white);
   max-width: 1280px;
   margin: 0 auto;
+  padding: 20px 20px 0 20px;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
+  padding-bottom: 30px;
   border-bottom: black 2px solid;
 }
 
-.title {
-  margin: 0 auto 0 0;
-  display: inline-block;
-  align-self: center;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-  font-family: inherit;
-  font-size: 40px;
-  padding-left: 15px;
-}
-
-.imageContainer {
+.headContainer {
   display: flex;
-  align-self: center;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .homeIcon {
@@ -39,182 +22,93 @@
   cursor: pointer;
 }
 
-.profileContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0 50px;
-}
-.profileIcon {
-  height: 200px;
-  width: 200px;
+.logo {
+  display: inline-block;
 }
 
-.info{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 100px;
-  margin-bottom: 100px;
-}
-.infoBox {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  max-width: 500px;
-  gap: 30px;
-}
-.infoContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  max-width: 400px;
-}
-.infoTitle {
-  margin: 0 0;
-  padding-left: 5px;
+.title {
   display: inline-block;
+  align-self: flex-end;
+  margin: 0 auto 0 20px;
   letter-spacing: 0.05em;
   font-weight: 700;
   font-family: inherit;
-  font-size: 27px;
+  font-size: 40px;
+  white-space: nowrap;
 }
 
-.input {
-  align-self: stretch;
-  color: var(--color-black);
-  border: 3px solid black;
-  outline: 0;
-  background-color: var(--color-white);
-  height: 55px;
-  border-radius: 40px;
-  box-sizing: border-box;
-  font-family: inherit;
+.category {
+  margin-top: 20px;
+  align-self: flex-start;
+  letter-spacing: 0.05em;
   font-weight: 700;
-  font-size: 20px;
-  color: var(--color-black);
-  min-width: 200px;
-  padding: 0 15px;
+  font-family: inherit;
+  font-size: 35px;
 }
 
-.noneDupInput {
-  align-self: center;
-  color: var(--color-black);
-  outline: 0;
-  height: 40px;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 20px;
-  min-width: 200px;
-  place-content: black;
-  border: 1px solid rgba(0, 0, 0, 0);
-}
-.noneDup {
-  display: flex;
-  align-self: stretch;
-  color: var(--color-black);
-  border: 3px solid black;
-  outline: 0;
-  background-color: var(--color-white);
-  height: 55px;
-  border-radius: 40px;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--color-black);
-  min-width: 200px;
-  padding: 0 15px;
-}
-.dupCheck {
-  display: flex;
-  align-self: center;
+.matchingContainer {
   cursor: pointer;
-  border-left: black 3px solid;
-  padding-left: 10px;
-}
-
-.gender {
   display: flex;
-  padding: 8px;
-  gap: 15px;
-}
-.gender > button {
-  background-color: white;
-  border-radius: 10px;
-  border: black solid 3px;
-  padding: 10px 30px;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.listContainer {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 700;
-  font-family: inherit;
-}
-.list {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: flex-start;
+  margin: 30px;
+  overflow-y: auto;
 }
-.delBtn {
-  font-size: 15px;
-  font-weight: 700;
-  font-family: inherit;
-  background-color: var(--color-gainsboro);
-  border-radius: 10px;
+
+.matchingWait, .matchingFinish {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border: 0;
-  padding: 5px 15px;
-  cursor: pointer;
-}
-
-.Submit {
-  background-color: white;
-  border-radius: 10px;
-  padding: 10px 30px;
-  font-size: 25px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.inputDisabled  {
-  align-self: stretch;
-  color: var(--color-black);
-  border: 4px solid rgba(0, 0, 0, 0);
-  outline: 0;
+  border-radius: 20px;
+  width: 300px;
+  padding: 20px;
+  gap: 20px;
+  flex-shrink: 1;
   background-color: var(--color-gainsboro);
-  height: 55px;
-  border-radius: 40px;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--color-black);
-  min-width: 200px;
-  padding: 0 15px;
+}
+.matchingFinish {
+  background-color: var(--color-khaki);
 }
 
-.inputAble {
-  align-self: stretch;
-  color: var(--color-black);
-  border: 4px solid black;
-  outline: 0;
-  background-color: var(--color-white);
-  height: 55px;
-  border-radius: 40px;
-  box-sizing: border-box;
-  font-family: inherit;
+.sche {
+  text-align: center;
+  letter-spacing: 0.05em;
   font-weight: 700;
-  font-size: 20px;
-  color: var(--color-black);
-  min-width: 200px;
-  padding: 0 15px;
+  font-family: inherit;
+  max-width: 260px;
+  font-size: 15px;
+}
+.t {
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0;
+  padding: 0 0;
+  max-width: 260px;
+}
+.type {
+  border: 0;
+  padding: 5px 10px;
+  margin: 7px;
+  background-color: var(--color-palegoldenrod);
+  border-radius: 20px;
+  overflow: hidden;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.status {
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  max-width: 260px;
 }

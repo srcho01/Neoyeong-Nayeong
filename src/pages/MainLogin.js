@@ -31,8 +31,8 @@ const MainLogin = () => {
     navigate("/mypage");
   }, [navigate]);
 
-  const onMatch = useCallback(() => {
-    navigate("/match/state");
+  const onProfile = useCallback(() => {
+    navigate("/profile");
   }, [navigate]);
 
 
@@ -69,10 +69,9 @@ const MainLogin = () => {
             <Logo isLogout={false}/>
           </div>
           <div className={styles.imageContainer}>
-            <div className={styles.nickname}> {nickname} </div>
-            <img src="/profile.svg" alt="MyPage" className={styles.image} onClick={onMypage} />
-            <img src="/match.svg" alt="Matching" className={styles.image} onClick={onMatch}/>
-            <img src="/logout.svg" alt="Logout" className={styles.image} onClick={onLogout}/>
+            <div className={styles.text} onClick={onProfile}> {nickname} </div>
+            <div className={styles.text} onClick={onMypage} > MYPAGE </div>
+            <div className={styles.text} onClick={onLogout} > LOGOUT </div>
           </div>
         </div>
         <b className={styles.time}> 지금은 {currentDateTime}입니다 </b>
