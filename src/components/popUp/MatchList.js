@@ -7,10 +7,11 @@ import { db } from "../../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
 
 
-const PersonComponent = ({ profileSrc, userInfo, open, setThisUid, isAccepted }) => {
+const PersonComponent = ({ profileSrc, userInfo, open, setThisUid, setIsAccepted, isAccepted }) => {
   const handleClick = () => {
     open(true);
     setThisUid(userInfo.id);
+    setIsAccepted(isAccepted);
   };
 
   return (
@@ -43,6 +44,7 @@ const MatchList = ({onClose, post}) => {
 
   const [thisUid, setThisUid] = useState("");
   const [isCurrent, setCurrent] = useState(false);
+  const [isAccepted, setIsAccepted] = useState(false);
 
   const allClose = useCallback(() => {
     if (onClose) {
@@ -99,7 +101,7 @@ const MatchList = ({onClose, post}) => {
       </div>
 
       <div className={styles.text}>
-        모집 현황 {post.acceptedUid.length} / {post.pnum}
+        모집 현황 {post.acceptedUid.length-1} / {post.pnum-1}
       </div>
       
       <div className={styles.peopleList}>
@@ -111,6 +113,7 @@ const MatchList = ({onClose, post}) => {
             setThisUid={setThisUid}
             open={() => setCurrent(true)}
             isAccepted={post.acceptedUid.includes(userInfo.id)}
+            setIsAccepted={setIsAccepted}
           />
         ))}
       </div>
@@ -132,6 +135,7 @@ const MatchList = ({onClose, post}) => {
             allClose={allClose}
             uid={thisUid}
             post={post}
+            isAccepted={isAccepted}
           />
         </PortalPopup>
       )}

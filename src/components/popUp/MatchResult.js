@@ -59,7 +59,6 @@ const MatchResult = ({onClose, post}) => {
   }, []);
 
 
-  console.log(acceptList);
   return (
     <div className={styles.popUpFrame}>
       <div className={styles.head}>
@@ -88,6 +87,13 @@ const MatchResult = ({onClose, post}) => {
           />
         ))}
       </div>
+
+      <div className={styles.submitContainer}>
+        <span className={styles.submit} onClick={onReturnClick}>
+          완료
+        </span>
+      </div>
+
     </div>
   );
 };

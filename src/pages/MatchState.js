@@ -39,8 +39,8 @@ const RegisterComponent = ({ setList, setResult, setThisPost, postInfo }) => {
           setPost(data);
           setThisPost(data);
         } else {
-          console.log(matchId, postId);
-          console.log("No such document!");
+          console.log("Deleted in Firestore: ", postId);
+          return;
         }
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -104,7 +104,7 @@ const RegisterComponent = ({ setList, setResult, setThisPost, postInfo }) => {
 };
 
 
-const ApplyComponent = ({ setResult, postInfo, setThisPost }) => {
+const ApplyComponent = ({ setResult, postInfo, setThisPost, uid }) => {
   const matchId = postInfo.split("_")[0];
   const postId = postInfo.split("_")[1];
 
@@ -125,7 +125,8 @@ const ApplyComponent = ({ setResult, postInfo, setThisPost }) => {
           setPost(data);
           setThisPost(data);
         } else {
-          console.log("No such document!");
+          console.log("Deleted in Firestore: ", postId);
+          return;
         }
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -159,26 +160,37 @@ const ApplyComponent = ({ setResult, postInfo, setThisPost }) => {
   }
   data = data[matchId.slice(1)];
 
-  if (p.pnum > p.acceptedUid.length) {
+  if (p.pnum === p.acceptedUid.length) {
+    if (p.acceptedUid.includes(uid)) {
+      const handleClick = () => {
+        setResult(true);
+        setThisPost(p);
+      };
+      return (
+        <div className={styles.matchingFinish} onClick={handleClick}>
+          <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
+          <b className={styles.t}> {p.title} </b>
+          <b className={styles.type}> {p.type} </b>
+          <b className={styles.status}> 수락 </b>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.matchingWait} style={{ cursor: 'auto' }}>
+          <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
+          <b className={styles.t}> {p.title} </b>
+          <b className={styles.type}> {p.type} </b>
+          <b className={styles.status}> 모집 마감 </b>
+        </div>
+      );
+    }
+  } else {
     return (
       <div className={styles.matchingWait} style={{ cursor: 'auto' }}>
         <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
         <b className={styles.t}> {p.title} </b>
         <b className={styles.type}> {p.type} </b>
         <b className={styles.status}> 대기 </b>
-      </div>
-    );
-  } else {
-    const handleClick = () => {
-      setResult(true);
-      setThisPost(p);
-    };
-    return (
-      <div className={styles.matchingFinish} onClick={handleClick}>
-        <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
-        <b className={styles.t}> {p.title} </b>
-        <b className={styles.type}> {p.type} </b>
-        <b className={styles.status}> 수락 </b>
       </div>
     );
   }
@@ -231,7 +243,7 @@ const MatchState = () => {
       <header className={styles.header}>
         <div className={styles.headContainer}>
           <div className={styles.logo}>
-            <Logo/>
+            <Logo isLogout={false}/>
           </div>
           <div className={styles.title}>
             매칭현황
@@ -270,6 +282,7 @@ const MatchState = () => {
             setResult={() => {setResult(true)}}
             setThisPost={setThisPost}
             postInfo={matchId}
+            uid={uid}
           />
         ))}
       </div>

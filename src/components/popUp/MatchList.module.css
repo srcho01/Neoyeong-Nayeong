@@ -48,6 +48,7 @@
   overflow: hidden;
   max-width: 100%;
   text-overflow: ellipsis;
+  min-height: 50px;
 }
 
 .text, .nickname {
