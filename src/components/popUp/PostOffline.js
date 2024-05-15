@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import styles from "./PostOffline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
@@ -10,8 +10,12 @@ import { selectUserUid } from "../../store/userSlice"
 const PostOffline = ({onClose, match}) => {
   // useStates
   const [title, setTitle, changeTitle] = getUserInput("");
-  const [pnum, setNum, changeNum] = getUserInput(1);
+  const [pnum, setNum] = useState(1);
   const [text, setText, changeText] = getUserInput("");
+
+  const changeNum = useCallback((e) => {
+    setNum(parseInt(e.target.value));
+  }, []);
 
   // Get user info
   const uid = useSelector(selectUserUid); // redux store uid
@@ -33,7 +37,7 @@ const PostOffline = ({onClose, match}) => {
       "matchId": match,
       "type": "오프라인",
       "title": title,
-      "pnum": pnum+1,
+      "pnum": pnum,
       "text": text,
       "applyUid": [],
       "acceptedUid": [uid]

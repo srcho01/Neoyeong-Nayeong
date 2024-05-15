@@ -25,7 +25,7 @@ const MatchProfileCard = ({close, allClose, uid, post, isAccepted}) => {
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      if (data.acceptedUid.length === data.pnum) {
+      if (data.acceptedUid.length === data.pnum + 1) {
         alert("모집이 완료되었습니다");
         if (allClose) {
           allClose();

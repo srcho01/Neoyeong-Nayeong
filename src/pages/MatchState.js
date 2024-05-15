@@ -74,20 +74,7 @@ const RegisterComponent = ({ setList, setResult, setThisPost, postInfo }) => {
   }
   data = data[matchId.slice(1)];
   
-  if (p.pnum > p.acceptedUid.length) {
-    const handleClick = () => {
-      setList(true);
-      setThisPost(p);
-    };
-    return (
-      <div className={styles.matchingWait} onClick={handleClick}>
-        <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
-        <b className={styles.t}> {p.title} </b>
-        <b className={styles.type}> {p.type} </b>
-        <b className={styles.status}> 신청 {p.applyUid.length} </b>
-      </div>
-    );
-  } else {
+  if (p.pnum + 1 <= p.acceptedUid.length) {
     const handleClick = () => {
       setResult(true);
       setThisPost(p);
@@ -98,6 +85,19 @@ const RegisterComponent = ({ setList, setResult, setThisPost, postInfo }) => {
         <b className={styles.t}> {p.title} </b>
         <b className={styles.type}> {p.type} </b>
         <b className={styles.status}> 모집 완료 </b>
+      </div>
+    );
+  } else {
+    const handleClick = () => {
+      setList(true);
+      setThisPost(p);
+    };
+    return (
+      <div className={styles.matchingWait} onClick={handleClick}>
+        <b className={styles.sche}> {data.team1} vs {data.team2} {data.month}월 {data.day}일 {data.hour < 9 ? `0${data.hour}` : data.hour}:{data.minute < 9 ? `0${data.minute}` : data.minute} </b>
+        <b className={styles.t}> {p.title} </b>
+        <b className={styles.type}> {p.type} </b>
+        <b className={styles.status}> 신청 {p.applyUid.length} </b>
       </div>
     );
   }
@@ -160,7 +160,7 @@ const ApplyComponent = ({ setResult, postInfo, setThisPost, uid }) => {
   }
   data = data[matchId.slice(1)];
 
-  if (p.pnum === p.acceptedUid.length) {
+  if (p.pnum + 1 <= p.acceptedUid.length) {
     if (p.acceptedUid.includes(uid)) {
       const handleClick = () => {
         setResult(true);

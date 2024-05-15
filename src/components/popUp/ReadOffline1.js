@@ -56,7 +56,7 @@ const ReadOffline1 = ({onClose, post}) => {
       <div className={styles.infoContainer}>
         <b className={styles.infoTitle}>모집인원</b>
         <div className={styles.input}>
-          {post.pnum-1}
+          {post.pnum}
         </div>
       </div>
 
@@ -66,7 +66,7 @@ const ReadOffline1 = ({onClose, post}) => {
       </div>
       
       <div className={styles.Submit} onClick={open}>
-        다음
+        작성자 정보
       </div>
 
       {isCurrentOpen && (

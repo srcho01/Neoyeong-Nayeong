@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import styles from "./PostOnline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
@@ -10,9 +10,13 @@ import { selectUserUid } from "../../store/userSlice"
 const PostOnline = ({onClose, match}) => {
   // useStates
   const [title, setTitle, changeTitle] = getUserInput("");
-  const [pnum, setNum, changeNum] = getUserInput(1);
+  const [pnum, setNum] = useState(1);
   const [loc, setLoc, changeLoc] = getUserInput("");
   const [text, setText, changeText] = getUserInput("");
+
+  const changeNum = useCallback((e) => {
+    setNum(parseInt(e.target.value));
+  }, []);
 
   // Get user info
   const uid = useSelector(selectUserUid); // redux store uid
@@ -37,7 +41,7 @@ const PostOnline = ({onClose, match}) => {
       "matchId": match,
       "type": "온라인",
       "title": title,
-      "pnum": pnum+1,
+      "pnum": pnum,
       "loc": loc,
       "text": text,
       "applyUid": [],

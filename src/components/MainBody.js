@@ -117,7 +117,7 @@ const Component = ({imageSrc, sport, isLogout}) => {
           />
         ))}
         {schedules.length === 0 && 
-          <div className={styles.sche} style={{ backgroundColor: 'var(--color-gainsboro)'}}>
+          <div className={styles.sche} style={{ backgroundColor: 'var(--color-gainsboro)', cursor: 'auto' }}>
             <div className={styles.scheText} > 경기 준비 중 </div>
           </div>
         }

@@ -101,7 +101,7 @@ const MatchList = ({onClose, post}) => {
       </div>
 
       <div className={styles.text}>
-        모집 현황 {post.acceptedUid.length-1} / {post.pnum-1}
+        모집 현황 {post.acceptedUid.length-1} / {post.pnum}
       </div>
       
       <div className={styles.peopleList}>

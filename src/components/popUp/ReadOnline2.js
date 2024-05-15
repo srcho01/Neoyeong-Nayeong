@@ -14,7 +14,7 @@ const ReadOnline2 = ({close, allClose, post}) => {
 
   const onApplyClick = useCallback(async() => {
     try {
-      if (post.acceptedUid.length === post.pnum) {
+      if (post.acceptedUid.length === post.pnum + 1) {
         alert("모집이 마감된 게시글입니다");
         return;
       }
@@ -83,12 +83,17 @@ const ReadOnline2 = ({close, allClose, post}) => {
           이전
         </div>
 
-        {uid !== post.writer && post.pnum !== post.acceptedUid.length && (
+        {uid !== post.writer && post.pnum + 1 > post.acceptedUid.length && !post.applyUid.includes(uid) && (
           <div className={styles.Submit} onClick={onApplyClick}>
             신청
           </div>
         )}
-        {uid !== post.writer && post.pnum === post.acceptedUid.length && (
+        {uid !== post.writer && post.pnum + 1 > post.acceptedUid.length && post.applyUid.includes(uid) && (
+          <div className={styles.Submit} style={{cursor: "auto"}}>
+            신청 완료
+          </div>
+        )}
+        {uid !== post.writer && post.pnum + 1 <= post.acceptedUid.length && (
           <div className={styles.Submit} style={{cursor: "auto"}}>
             모집 완료
         </div>
