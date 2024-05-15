@@ -10,6 +10,7 @@ import styles from "./SignUp.module.css";
 import getUserInput from "../hooks/getUserInput"
 import DropDown from "../components/Dropdown";
 import { SPORT, GENDER, TEAM } from '../data/dropdownData';
+import Logo from "../components/Logo";
 
 
 function emailCheck(email_address) {
@@ -134,9 +135,6 @@ const SignUp = () => {
       }
 
       if (!isCheckNickname || lastCheckNickname !== nickname) {
-        // console.log(isCheckNickname);
-        // console.log(lastCheckNickname);
-        // console.log(nickname);
         return alert("닉네임 확인을 해주세요");
       }
 
@@ -148,8 +146,8 @@ const SignUp = () => {
         name: name,
         gender: gender,
         nickname: (nickname === "" ? name : nickname),
-        sport: sport && sport.length > 0 ? sport: null,
-        team: team && team.length > 0 ? team: null,
+        sport: sport.length > 0 ? sport: [],
+        team: team.length > 0 ? team: [],
         write: [],
         apply: [],
       });
@@ -180,7 +178,8 @@ const SignUp = () => {
     <div className={styles.fullScreen}>
       <div className={styles.frame}>
         <header className={styles.header}>
-          <h1 className={styles.title}>회원가입</h1>
+          <Logo isLogout={true} />
+          <b className={styles.title}>회원가입</b>
           <img
             className={styles.homeIcon}
             loading="lazy"

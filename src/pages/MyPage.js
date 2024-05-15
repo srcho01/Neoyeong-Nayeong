@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUserUid } from "../store/userSlice"
 
 import styles from "./MyPage.module.css";
+import Logo from "../components/Logo";
 
 import DropDown from "../components/Dropdown";
 import { SPORT, TEAM } from '../data/dropdownData';
@@ -58,14 +59,6 @@ const MyPage = () => {
       fetchUserInfo();
     }
   }, [db, uid]);
-
-  useEffect(() => {
-    // console.log(isCheckNickname);
-    // console.log("current:", userInfo.nickname);
-    // console.log("prev nickname:", prevNickname);
-    // console.log("last check:", lastCheckNickname);
-  }, [userInfo, isCheckNickname, lastCheckNickname, prevNickname]);
-  
 
   const onHomeIconClick = useCallback(() => {
     navigate("/main/login");
@@ -163,6 +156,7 @@ const MyPage = () => {
     <div className={styles.fullScreen}>
       <div className={styles.frame}>
         <header className={styles.header}>
+          <Logo isLogout={false} />
           <h1 className={styles.title}>마이페이지</h1>
           <img
             className={styles.homeIcon}

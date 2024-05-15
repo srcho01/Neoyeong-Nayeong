@@ -85,7 +85,7 @@ const MatchBoard = () => {
       <header className={styles.header}>
         <div className={styles.headContainer}>
           <div className={styles.logo}>
-            <Logo/>
+            <Logo isLogout={false}/>
           </div>
           <div className={styles.title}>
             매칭 게시판

@@ -20,7 +20,7 @@ const MainLogout = () => {
       <header className={styles.header}>
         <div className={styles.headContainer}>
           <div className={styles.logo}>
-            <Logo/>
+            <Logo isLogout={true}/>
           </div>
           <b className={styles.loginTextButton} onClick={onLoginTextButtonClick}> 로그인 </b>
         </div>
