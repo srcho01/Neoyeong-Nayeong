@@ -13,15 +13,10 @@
 ‘너하고 나하고’라는 의미를 담고 있는 제주어인 <너영나영>은 온라인과 오프라인에서 스포츠 경기를 함께 즐기고자 하는 사용자들을 연결하는 서비스입니다. 같이 할 사람을 구하는 사용자는 <너영나영>에서 원하는 스포츠 경기를 선택하면, 사용자의 기본 정보와 함께 같이 게시글이 올라갑니다. 다른 사용자들은 이미 올라온 게시글을 보고 함께 하려는 사람을 찾습니다.<br><br><br>
 
 
-## 시연 영상
-[![시연 영상](images/logo.png)](https://youtu.be/MZwkqfBD4eQ&ab_channel=%E2%80%8D정수현%28학부생-소프트웨어전공%29)<br><br><br>
-
-
 ## 주요 기능
-- 로그인 및 회원가입
+- 로그인, 회원가입 및 정보 수정
 - 경기별 게시글 게시판
-- 함께 하려는 사람을 찾는 게시글 작성
-- 게시글 조회
+- 게시글 작성 및 조회, 매칭 신청
 - 대기, 모집 마감, 현재 신청 인원을 통한 매칭 현황 제공
 - 사용자의 프로필 카드를 보고 함께할 사람을 선택
 - 모집 완료 시 매칭 성공된 사용자의 이메일 제공
@@ -38,10 +33,9 @@
 ## 사용 기술
 <h4> ⚒️ Tech Skills ⚒️ </h4>
 <p display="inline-block">
-    <img src=https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white>
-    <img src=https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white>
-    <img src=https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E>
     <img src=https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB>
+    <img src=https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E>
+    <img src=https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white>
     <img src=https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34>
 </p>
 
@@ -58,7 +52,7 @@
 ## 상세 기능
 ### 로그인 및 회원가입
 <p align="center">
-    <img src="images/sign_up.jpg" align="center" width="48%">
+    <img src="images/sign_up.jpg" align="center" width="47%">
     <img src="images/login.jpg" align="center" width="49%">
 </p>
 
@@ -69,20 +63,20 @@
 
 ### 메인 화면
 <p align="center">
-    <img src="images/main_logout.jpg" align="center" width="47%">
-    <img src="images/main_login.jpg" align="center" width="49%">
+    <img src="images/main_logout.jpg" align="center" width="49%">
+    <img src="images/main_login.jpg" align="center" width="48%">
 </p>
 
 - 현재 시각과 각 스포츠별 경기 일정을 최대 10개씩 보여줍니다.
 - 화면 비율에 따라 가로로 스크롤할 수 있습니다.
 - 경기 스케쥴 카드를 눌러 경기별 매칭 게시판으로 이동합니다.
 - 로그인하지 않았을 때는 경기 스케쥴 카드를 누르면 로그인 화면으로 이동합니다.
-- 로그인을 했을 때는 닉네임을 표시하고 마이페이지, 매칭 현황 화면으로 이동할 수 있습니다.<br><br>
+- 로그인을 했을 때는 닉네임을 표시하고  프로필 수정, 마이페이지 화면으로 이동할 수 있습니다.<br><br>
 
 
-### 마이페이지
+### 프로필 수정
 <p>
-    <img src="images/mypage.jpg" width="50%">
+    <img src="images/profile.jpg" width="50%">
 </p>
 
 - 현재 저장된 정보를 불러옵니다.
@@ -91,22 +85,23 @@
 
 ### 매칭 게시판
 <p align="left">
-    <img src="images/match_state_before.jpg" align="center" width="59%">
-    <img src="images/post_offline.jpg" align="center" width="19%">
-    <img src="images/post_online.jpg" align="center" width="19%">
+    <img src="images/match_board.jpg" align="center"  width="59%">
+    <img src="images/post_offline.jpg" align="center" width="17%">
+    <img src="images/post_online.jpg" align="center" width="17%">
 </p>
-<img src="images/match_board.jpg" width="54%">
 
 - "+" 버튼을 누르면 글을 등록할 수 있습니다.
 - 오프라인과 온라인 중에 선택하여 글을 작성합니다.
 - 글을 등록하면 팝업이 꺼지고 작성한 글이 매칭 게시판에 보여집니다.<br><br>
 
 
-### 매칭 현황
+### 마이페이지
 <p align="center">
-    <img src="images/match_state_before.jpg" align="center" width="68%">
+    <img src="images/mypage_before.jpg" align="center" width="68%">
     <img src="images/match_ing.jpg" align="center" width="30%">
-    <img src="images/match_state_after.jpg" align="center" width="68%">
+</p>
+<p align="center">
+    <img src="images/mypage_after.jpg" align="center" width="69%">
     <img src="images/match_complete.jpg" align="center" width="30%">
 </p>
 
