@@ -35,6 +35,12 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onLoginSubmitClick();
+    }
+  };
+
   const onLoginSubmitClick = useCallback(async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -66,7 +72,7 @@ const Login = () => {
       
       <div className={styles.container}>
         <div className={styles.logo}>
-          <Logo />
+          <Logo isLogout={true}/>
         </div>
 
         <h1 className={styles.loginText}>로그인</h1>
@@ -83,6 +89,7 @@ const Login = () => {
             placeholder="비밀번호"
             type="password"
             onChange={onPasswordChange}
+            onKeyDown={handleKeyPress}
           />
         </div>
 
