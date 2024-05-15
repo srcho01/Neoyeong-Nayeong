@@ -90,10 +90,10 @@
 
 
 ### 매칭 게시판
-<p align="center">
+<p align="left">
     <img src="images/match_state_before.jpg" align="center" width="59%">
-    <img src="images/post_offline.jpg" align="center" width="20%">
-    <img src="images/post_online.jpg" align="center" width="20%">
+    <img src="images/post_offline.jpg" align="center" width="19%">
+    <img src="images/post_online.jpg" align="center" width="19%">
 </p>
 <img src="images/match_board.jpg" width="54%">
 
