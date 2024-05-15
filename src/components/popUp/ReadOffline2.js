@@ -33,7 +33,7 @@ const ReadOffline2 = ({close, allClose, post}) => {
 
       console.log(uid, ": 신청 성공", "포스트", post.matchId, post.id);
 
-      alert("신청에 성공했습니다")
+      alert("신청에 성공했습니다");
 
     } catch (error) {
       console.error('신청하기 실패:', error.message);
