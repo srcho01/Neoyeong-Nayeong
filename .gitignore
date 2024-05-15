@@ -24,3 +24,11 @@ yarn-error.log*
 
 # .env
 .env
+
+# firebase deploy files
+.firebaserc
+firebase.json
+.firebase/
+
+# workspace
+**.code-workspace
