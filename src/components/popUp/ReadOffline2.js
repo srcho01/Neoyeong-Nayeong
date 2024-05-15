@@ -83,9 +83,14 @@ const ReadOffline2 = ({close, allClose, post}) => {
           이전
         </div>
 
-        {uid !== post.writer && post.pnum + 1 > post.acceptedUid.length && (
+        {uid !== post.writer && post.pnum + 1 > post.acceptedUid.length && !post.applyUid.includes(uid) && (
           <div className={styles.Submit} onClick={onApplyClick}>
             신청
+          </div>
+        )}
+        {uid !== post.writer && post.pnum + 1 > post.acceptedUid.length && post.applyUid.includes(uid) && (
+          <div className={styles.Submit} style={{cursor: "auto"}}>
+            신청 완료
           </div>
         )}
         {uid !== post.writer && post.pnum + 1 <= post.acceptedUid.length && (
