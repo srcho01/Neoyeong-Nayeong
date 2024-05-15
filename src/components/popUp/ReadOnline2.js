@@ -14,13 +14,11 @@ const ReadOnline2 = ({close, allClose, post}) => {
 
   const onApplyClick = useCallback(async() => {
     try {
-      console.log(post);
-
       if (post.acceptedUid.length === post.pnum) {
         alert("모집이 마감된 게시글입니다");
         return;
       }
-      
+
       // write post
       const ref = doc(db, "Board", `${post.matchId}`, "Posts", `${post.id}`);
       await updateDoc(ref, {
@@ -29,7 +27,6 @@ const ReadOnline2 = ({close, allClose, post}) => {
 
       // write user info
       const uref = doc(db, "UserInfo", `${uid}`);
-      console.log(uref);
       await updateDoc(uref, {
         apply: arrayUnion(`${post.matchId}_${post.id}`)
       });
@@ -85,9 +82,23 @@ const ReadOnline2 = ({close, allClose, post}) => {
         <div className={styles.Submit} onClick={onBackClick}>
           이전
         </div>
-        <div className={styles.Submit} onClick={onApplyClick}>
-          신청
+
+        {uid !== post.writer && post.pnum !== post.acceptedUid.length && (
+          <div className={styles.Submit} onClick={onApplyClick}>
+            신청
+          </div>
+        )}
+        {uid !== post.writer && post.pnum === post.acceptedUid.length && (
+          <div className={styles.Submit} style={{cursor: "auto"}}>
+            모집 완료
         </div>
+        )}
+        {uid === post.writer && (
+          <div className={styles.Submit} style={{cursor: "auto"}}>
+            작성한 게시글입니다
+          </div>
+        )}
+
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import styles from "./PostOffline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
@@ -33,10 +33,10 @@ const PostOffline = ({onClose, match}) => {
       "matchId": match,
       "type": "오프라인",
       "title": title,
-      "pnum": pnum,
+      "pnum": pnum+1,
       "text": text,
       "applyUid": [],
-      "acceptedUid": []
+      "acceptedUid": [uid]
     }
 
     try {
@@ -57,6 +57,7 @@ const PostOffline = ({onClose, match}) => {
     }
 
     if (onClose) {
+      window.location.reload();
       onClose();
     }
 

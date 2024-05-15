@@ -56,7 +56,7 @@ const ReadOffline1 = ({onClose, post}) => {
       <div className={styles.infoContainer}>
         <b className={styles.infoTitle}>모집인원</b>
         <div className={styles.input}>
-          {post.pnum}
+          {post.pnum-1}
         </div>
       </div>
 

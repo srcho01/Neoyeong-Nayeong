@@ -33,7 +33,7 @@ const PostSelectType = ({onClose, match}) => {
 
   return (
     <div className={styles.popUpFrame}>
-        <Logo/>
+        <Logo isLogout={false}/>
         <div className={styles.text}>
           함께 할 유형을 선택해주세요
         </div>

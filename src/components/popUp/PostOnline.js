@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import styles from "./PostOnline.module.css";
 
 import getUserInput from "../../hooks/getUserInput"
@@ -27,6 +27,9 @@ const PostOnline = ({onClose, match}) => {
     if (title === "") {
       alert("제목을 입력해주세요");
       return;
+    } else if (loc === "") {
+      alert("지역을 입력해주세요");
+      return;
     }
     
     const post = {
@@ -34,11 +37,11 @@ const PostOnline = ({onClose, match}) => {
       "matchId": match,
       "type": "온라인",
       "title": title,
-      "pnum": pnum,
+      "pnum": pnum+1,
       "loc": loc,
       "text": text,
       "applyUid": [],
-      "acceptedUid": []
+      "acceptedUid": [uid]
     }
 
     try {
@@ -60,6 +63,7 @@ const PostOnline = ({onClose, match}) => {
 
     if (onClose) {
       onClose();
+      window.location.reload();
     }
 
   }, [onClose, uid, title, pnum, loc, text, match]);
