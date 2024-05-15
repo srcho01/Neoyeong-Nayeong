@@ -83,6 +83,7 @@ const Login = () => {
             placeholder="이메일"
             type="text"
             onChange={onEmailChange}
+            onKeyDown={handleKeyPress}
           />
           <input
             className={styles.framePassword}
