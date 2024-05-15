@@ -14,7 +14,7 @@ const Schedule = ({sport, id, team1, team2, month, day, hour, minute, loc, isLog
   const handleClick = useCallback(() => {
     if (isLogout) {
       alert("로그인이 필요한 서비스입니다");
-      navigate("/login")
+      navigate("/login");
     } else {
       const query = `sport=${sport.toLowerCase()[0]}&id=${id}&team1=${team1}&team2=${team2}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&loc=${loc}`;
       navigate(`/match/board/value?${query}`);
@@ -101,7 +101,7 @@ const Component = ({imageSrc, sport, isLogout}) => {
         <img src={imageSrc} className={styles.image}/>
       </div>
       <div className={styles.scheContainer}>
-        {schedules.map((schedule, index) => (
+        {schedules.length > 0 && schedules.map((schedule, index) => (
           <Schedule 
             key={index}
             sport={sport}
@@ -116,6 +116,11 @@ const Component = ({imageSrc, sport, isLogout}) => {
             isLogout={isLogout}
           />
         ))}
+        {schedules.length === 0 && 
+          <div className={styles.sche} style={{ backgroundColor: 'var(--color-gainsboro)'}}>
+            <div className={styles.scheText} > 경기 준비 중 </div>
+          </div>
+        }
       </div>
     </div>
   );
