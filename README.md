@@ -4,7 +4,7 @@
 
 <p align="center">
     <br> <a href="https://yeong-512f5.web.app/" style="font-size: medium;"><b>  너영나영 사이트 바로가기 </b></a> <br><br>
-    <a href="https://yeong-512f5.web.app/" style="font-size: medium;"><b>  너영나영 시연 영상 </b></a>
+    <a href="https://youtu.be/k50wjZlmplM" style="font-size: medium;"><b>  너영나영 시연 영상 </b></a>
 </p> 
 
 <br><br><br>
